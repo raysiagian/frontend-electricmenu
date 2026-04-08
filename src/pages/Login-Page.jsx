@@ -1,0 +1,107 @@
+import { useState } from "react";
+import { login } from "../services/auth-service";
+import { useNavigate } from "react-router-dom";
+
+function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setError("");
+
+    if(!email || !password){
+        setError("Email dan Password wajib diisi")
+        return
+    }
+
+    setLoading(true);
+
+    try {
+        const data = await login({ email, password });
+
+        localStorage.setItem("token", data.token);
+
+        // handle role
+        const role = data.user.role_id
+        if (role === 1) {
+            navigate("/dashboard-admin");
+        } else if (role === 2) {
+            navigate("/dashboard-user");
+        } else {
+            navigate("/unauthorized");
+        }
+
+        } catch (err) {
+            console.log("ERROR:", err.response?.data || err.message);
+
+            if(err.response){
+                const res = err.response.data;
+                
+                if(res.emailVerified === false){
+                    navigate("/verify-email", {
+                        state: {email}
+                    });
+                    return;
+                }
+
+                if (res.error) {
+                    setError(res.error);
+                } else if (res.message) {
+                    setError(res.message);
+                } else {
+                    setError("Login gagal");
+                }
+            }else{
+                setError("Network error")
+            }
+        }finally{
+            setLoading(false)
+        }
+    };
+
+    return (
+        <div>
+            <h2>Login</h2>
+
+            <form onSubmit={handleSubmit}>
+                <div>
+                <input
+                    type="email"
+                    placeholder="email"
+                    value={email}
+                    onChange={(e) => {
+                    // console.log("EMAIL INPUT:", e.target.value);
+                    setEmail(e.target.value);
+                    }}
+                />
+                </div>
+
+                <div>
+                <input
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => {
+                    // console.log("PASSWORD INPUT:", e.target.value);
+                    setPassword(e.target.value);
+                    }}
+                />
+                </div>
+
+                <button type="submit" disabled={loading}>
+                    {loading ? "Loading..." : "Sign In"}
+                </button>
+            </form>
+
+            <button onClick={() => navigate("/register-user")}>Sign Up</button>
+        </div>
+    );
+}
+
+export default Login;

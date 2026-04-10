@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/auth-service";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -9,6 +9,7 @@ function Login() {
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,6 +69,12 @@ function Login() {
     return (
         <div>
             <h2>Login</h2>
+
+            {location.state?.message && (
+                <p style={{ color: "green" }}>
+                    {location.state.message}
+                </p>
+            )}
 
             <form onSubmit={handleSubmit}>
                 <div>

@@ -47,3 +47,9 @@ export const searchProductByShop = async ({ shop_id, search = "", page = 1, limi
     })
     return res.data
 }
+
+// public
+export const getProductByShopPublic = async (shop_slug) => {
+    const res = await api.get(`/public/shop/${shop_slug}/products`);
+    return res.data
+}

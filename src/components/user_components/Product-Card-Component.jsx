@@ -5,7 +5,7 @@ function ProductCardComponent({product, shop_id}){
     return (
         <div>
             <img src={product?.product_image_url} alt="Product Image" />
-            <Link to={`/shop/${shop_id}/product/${product.id}`}>
+            <Link to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
                 {product.product_name}
             </Link>
             <p>Price: Rp.{product?.price}</p>

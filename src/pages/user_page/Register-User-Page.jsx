@@ -6,20 +6,45 @@ function RegisterUser() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+    setError("");
+
+    if(!name || !email || !password){
+        setError("Nama, email dan password wajib diisi")
+        return
+    }
+
+    if (loading) return;
+    setLoading(true);
+
     try {
         const data = await registerUser({ name, email, password });
 
         console.log("RESPONSE:", data);
 
-        alert("Registrasi berhasil");
+        navigate("/login", {
+                state: {
+                    message: "Registrasi berhasil! Silakan login."
+                }
+            });
+
         } catch (err) {
-        console.log("ERROR:", err.response?.data || err.message);
+            console.log("ERROR:", err.response?.data || err.message);
+
+            alert(
+                err.response?.data?.error ||
+                err.response?.data?.message ||
+                "Terjadi kesalahan"
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -46,7 +71,6 @@ function RegisterUser() {
                     placeholder="email"
                     value={email}
                     onChange={(e) => {
-                    console.log("EMAIL INPUT:", e.target.value);
                     setEmail(e.target.value);
                     }}
                 />
@@ -58,13 +82,14 @@ function RegisterUser() {
                     placeholder="password"
                     value={password}
                     onChange={(e) => {
-                    console.log("PASSWORD INPUT:", e.target.value);
                     setPassword(e.target.value);
                     }}
                 />
                 </div>
 
-                <button type="submit">Sign Up</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? "Loading..." : "Sign Up"}
+                </button>
             </form>
             <button onClick={() => navigate("/login")}>Sign In</button>
         </div>

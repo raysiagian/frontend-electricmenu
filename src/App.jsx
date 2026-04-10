@@ -15,6 +15,8 @@ import UserShopPage from './pages/user_page/User-Shop-Page';
 import CreateShopPage from './pages/user_page/Create-Shop-Page';
 import CreateProductPage from './pages/user_page/Create-Product-Page';
 import UserProductPage from './pages/user_page/User-Product-Page';
+import PublicShopPage from './pages/public_page/Public-Shop-Page'
+import OrderFormPage from './pages/public_page/Order-Form-Page';
 
 function App() {
   return (
@@ -27,12 +29,15 @@ function App() {
         <Route path="/verify-email" element={<VerifyEmail/>} />
         {/* user */}
         <Route path="/dashboard-user" element={<DashboardUser/>} />
-        <Route path="/shop/:id" element={<UserShopPage/>} />
-        <Route path="/shop/create-shop" element={<CreateShopPage/>} />
-        <Route path="/shop/:shop_id/create-product" element={<CreateProductPage />} />
-        <Route path="/shop/:shop_id/product/:id" element={<UserProductPage />} />
+        <Route path="/dashboard-user/shop/:id" element={<UserShopPage/>} />
+        <Route path="/dashboard-user/shop/create-shop" element={<CreateShopPage/>} />
+        <Route path="/dashboard-user/shop/:shop_id/create-product" element={<CreateProductPage />} />
+        <Route path="/dashboard-user/shop/:shop_id/product/:id" element={<UserProductPage />} />
         {/* admin */}
         <Route path="/dashboard-admin" element={<DashboardAdmin/>} />
+        {/* public */}
+        <Route path="/shop/:shop_slug" element={<PublicShopPage/>} />
+        <Route path="/shop/:shop_slug/order" element={<OrderFormPage/>} />
       </Routes>
     </BrowserRouter>
   );

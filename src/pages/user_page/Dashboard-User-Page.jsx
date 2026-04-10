@@ -29,7 +29,7 @@ function DashboardUser(){
             <div>
                 <h1>Hi, {user?.name}</h1>
                 <div>
-                    <button onClick={() => navigate("/shop/create-shop")}>Create Shop</button>
+                    <button onClick={() => navigate("/dashboard-user/shop/create-shop")}>Create Shop</button>
                 </div>
                 <ShopListComponent/>
             </div>

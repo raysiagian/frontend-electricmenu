@@ -4,7 +4,7 @@ function ShopCardComponent({shop}){
 
     return (
         <div>
-            <Link to={`/shop/${shop.id}`}>
+            <Link to={`/dashboard-user/shop/${shop.id}`}>
                 {shop.shop_name}
             </Link>
         </div>

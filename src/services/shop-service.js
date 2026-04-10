@@ -1,4 +1,5 @@
 import api from "./api";
+import publicApi from "./public-api.js";
 
 export const getUserShops = async () => {
     const res = await api.get("/shop/get-shops");
@@ -12,5 +13,10 @@ export const getShop = async (id) => {
 
 export const createShop = async (data) => {
     const res = await api.post("/shop/create-shop", data)
+    return res.data
+}
+
+export const getPublicShop = async (shop_slug) => {
+    const res = await publicApi.get(`/public/shop/${shop_slug}`);
     return res.data
 }

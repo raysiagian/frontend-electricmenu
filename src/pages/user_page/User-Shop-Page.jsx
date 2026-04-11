@@ -55,7 +55,7 @@ function UserShopPage() {
                 <img src={shop?.qr_url} alt="QR Code" />
                 <button onClick={handleDownloadQR}>Download QR</button>
                 <button onClick={handleCopy}>Copy Link</button>
-                <button onClick={() => navigate(`/shop/${id}/create-product`)}>Add Product</button>
+                <button onClick={() => navigate(`/dashboard-user/shop/${id}/create-product`)}>Add Product</button>
             </div>
             
             {/* searchbar */}

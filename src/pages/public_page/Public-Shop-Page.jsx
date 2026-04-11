@@ -9,6 +9,7 @@ function PublicShopPage() {
     const { shop_slug } = useParams();
     const [shop, setShop] = useState(null);
     const [cart, setCart] = useState([]);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         console.log(`${shop_slug}`)
@@ -62,6 +63,14 @@ function PublicShopPage() {
     return (
         <div>
             <h1>{shop.shop_name}</h1>
+
+            <input
+                type="text"
+                placeholder="Cari produk..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+            />
+
             <div>
                 <ProductListPublicComponent 
                     shop_slug={shop_slug}
@@ -69,6 +78,7 @@ function PublicShopPage() {
                     onAdd={addToCart}
                     onIncrease={increaseQty}
                     onDecrease={decreaseQty}
+                    search={search}
                 />
             </div>
             {cart.length > 0 && (

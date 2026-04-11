@@ -86,7 +86,7 @@ function CreateProductPage() {
             if (form.product_image) formData.append("product_image", form.product_image);
 
             await createProduct(formData);
-            navigate(`/shop/${paramShopId}`);
+            navigate(`/dashboard-user/shop/${paramShopId}`);
 
         } catch (err) {
             setError(err.response?.data?.error || "Gagal membuat produk");

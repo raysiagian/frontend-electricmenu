@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getPublicShop } from "../../services/shop-service";
 import ProductListPublicComponent from "../../components/public_components/Product-List-Public-Components";
 import OrderModalComponent from "../../components/public_components/Order-Modal-Component";
-
+import SearchBarComponent from "../../components/shared/Search-Bar-Component";
 
 function PublicShopPage() {
     const { shop_slug } = useParams();
@@ -64,12 +64,13 @@ function PublicShopPage() {
         <div>
             <h1>{shop.shop_name}</h1>
 
-            <input
-                type="text"
-                placeholder="Cari produk..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-            />
+            <div>
+                <SearchBarComponent
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Cari produk..."
+                />
+            </div>
 
             <div>
                 <ProductListPublicComponent 

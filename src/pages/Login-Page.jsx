@@ -13,7 +13,10 @@ function Login() {
 
     const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
+    
+    if (loading) return;
+    
     setError("");
 
     if(!email || !password){
@@ -105,6 +108,7 @@ function Login() {
                     {loading ? "Loading..." : "Sign In"}
                 </button>
             </form>
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
             <button onClick={() => navigate("/register-user")}>Sign Up</button>
         </div>

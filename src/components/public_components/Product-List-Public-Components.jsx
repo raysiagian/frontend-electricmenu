@@ -7,8 +7,8 @@ function ProductListPublicComponent({shop_slug, cart, onAdd, onIncrease, onDecre
     const [products, setProducts] = useState([])
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(1);                // ← tambah
-    const [pagination, setPagination] = useState(null); // ← tambah
+    const [page, setPage] = useState(1);                
+    const [pagination, setPagination] = useState(null); 
 
     
     useEffect(() => {

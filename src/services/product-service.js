@@ -35,6 +35,23 @@ export const createProduct = async (formData) => {
     return res.data
 }
 
+export const deleteProduct = async (id, confirm_product_name) => {
+    const res = await api.delete(`/product/${id}/delete-product`, {
+        data: {confirm_product_name}
+    })
+    return res.data
+}
+
+export const editProduct = async (id, formData) => {
+    const res = await api.put(`/product/${id}/edit-product`)
+}
+
+
+export const getProductStatsByID = async (id) => {
+    const res = await api.get(`/product/stats/${id}`)
+    return res.data
+}
+
 // search product on specific shop
 export const searchProductByShop = async ({ shop_id, search = "", page = 1, limit = 10, sort = "created_at", order = "desc" }) => {
     const res = await api.get(`/product/shop/${shop_id}/search-product`, {
@@ -48,6 +65,12 @@ export const searchProductByShop = async ({ shop_id, search = "", page = 1, limi
     })
     return res.data
 }
+
+export const updateProductAvailability = async (id) => {
+    const res = await api.put(`/product/${id}/update-availability`)
+    return res.data
+}
+
 
 // public
 export const getProductByShopPublic = async (shop_slug, page = 1, limit = 10) => {

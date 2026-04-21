@@ -7,13 +7,15 @@ function RegisterUser() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
+    if (loading) return;
+    
     setError("");
 
     if(!name || !email || !password){
@@ -21,7 +23,6 @@ function RegisterUser() {
         return
     }
 
-    if (loading) return;
     setLoading(true);
 
     try {
@@ -52,6 +53,7 @@ function RegisterUser() {
         <div>
             <h2>Sign Up</h2>
 
+            
             <form onSubmit={handleSubmit}>
                 <div>
                     <input 
@@ -91,6 +93,8 @@ function RegisterUser() {
                     {loading ? "Loading..." : "Sign Up"}
                 </button>
             </form>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+
             <button onClick={() => navigate("/login")}>Sign In</button>
         </div>
     );

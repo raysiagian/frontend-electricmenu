@@ -1,14 +1,20 @@
 import { Link } from "react-router-dom";
+import styles from "./ProductCard.module.css"
 
 function ProductCardComponent({product, shop_id}){
 
     return (
-        <div>
-            <img src={product?.product_image_url} alt="Product Image" />
-            <Link to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
+        <div className={styles.container}>
+            <div className={styles.imageWrapper}>
+                <img src={product?.product_image_url} alt="Product Image" />
+            </div>
+            <Link className={styles.title} to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
                 {product.product_name}
             </Link>
-            <p>Price: Rp.{product?.price}</p>
+            <div>
+                <p className={styles.atribute}>Price: <span className={styles.price}>Rp.{product?.price}</span></p>
+                <p className={styles.atribute}>Stock: {product?.stock}</p>
+            </div>
         </div>
     )
 

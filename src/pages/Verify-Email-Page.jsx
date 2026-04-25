@@ -9,7 +9,7 @@ function VerifyEmail() {
     const emailFromState = location.state?.email || "";
 
     const [email, setEmail] = useState(emailFromState);
-    const [otpCode, setOtpCode] = useState("");
+    const [otp, setOtp] = useState("");
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ function VerifyEmail() {
         try {
             const data = await verifyOTP({ email, otp });
 
-            console.log("VERIFY SUCCESS:", data);
+            // console.log("VERIFY SUCCESS:", data);
 
             if (data.token) {
                 localStorage.setItem("token", data.token);
@@ -67,7 +67,7 @@ function VerifyEmail() {
         try {
         const data = await resendOTP({ email });
 
-        console.log("RESEND:", data);
+        // console.log("RESEND:", data);
 
         setMessage("OTP berhasil dikirim ulang");
 
@@ -84,7 +84,7 @@ function VerifyEmail() {
 
     return (
         <div>
-            <h2>Login</h2>
+            <h2>Verify your email</h2>
 
             <form onSubmit={handleVerify}>
                 <div>
@@ -100,10 +100,10 @@ function VerifyEmail() {
                     <input 
                         type="text" 
                         placeholder="Otp Code"
-                        value={otpCode}
+                        value={otp}
                         onChange={(e) => {
-                            console.log("OTP INPUT:", e.target.value);
-                            setOtpCode(e.target.value);
+                            // console.log("OTP INPUT:", e.target.value);
+                            setOtp(e.target.value);
                         }} 
                     />
                 </div>

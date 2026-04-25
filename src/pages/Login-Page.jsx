@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { login } from "../services/auth-service";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -93,15 +95,27 @@ function Login() {
                 </div>
 
                 <div>
-                <input
-                    type="password"
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => {
-                    // console.log("PASSWORD INPUT:", e.target.value);
-                    setPassword(e.target.value);
-                    }}
-                />
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="password"
+                        value={password}
+                        onChange={(e) => {
+                        // console.log("PASSWORD INPUT:", e.target.value);
+                        setPassword(e.target.value);
+                        }}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(prev => !prev)}
+                        style={{
+                            right: "5px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            cursor: "pointer"
+                        }}
+                    >
+                        {showPassword ? "Hide" : "Show"}
+                    </button>
                 </div>
 
                 <button type="submit" disabled={loading}>
@@ -111,6 +125,9 @@ function Login() {
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             <button onClick={() => navigate("/register-user")}>Sign Up</button>
+            <Link to={`/forgot-password`}>
+                Forgot Password
+            </Link>
         </div>
     );
 }

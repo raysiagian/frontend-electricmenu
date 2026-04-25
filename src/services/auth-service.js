@@ -26,6 +26,21 @@ export const resendOTP = async (data) => {
     return res.data;
 }
 
+export const resetPasswordOTP = async (data) => {
+    const res = await api.post("auth/reset-password-otp", data)
+    return res.data;
+}
+
+export const resendResetPasswordOTP = async (data) => {
+    const res = await api.post("auth/resend-reset-password-otp", data)
+    return res.data
+}
+
+export const changePassword = async (data) => {
+    const res = await api.patch("/auth/change-password", data)
+    return res.data
+}
+
 export const logout = async (data) => {
     localStorage.removeItem("token");
     window.location.href = "/login";

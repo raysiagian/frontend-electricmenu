@@ -5,11 +5,17 @@ import { useNavigate } from "react-router-dom";
 function RegisterUser() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [isEmailValid, setIsEmailValid] = useState(true)
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
 
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +29,11 @@ function RegisterUser() {
         return
     }
 
+    if(!emailRegex.test(email)){
+        setError("Format email tidak valid")
+        return
+    }
+
     setLoading(true);
 
     try {
@@ -30,9 +41,10 @@ function RegisterUser() {
 
         console.log("RESPONSE:", data);
 
-        navigate("/login", {
+        navigate("/verify-email", {
                 state: {
-                    message: "Registrasi berhasil! Silakan login."
+                    email:email,
+                    message: "Registrasi berhasil! silahkan verifikasi otp."
                 }
             });
 
@@ -80,13 +92,25 @@ function RegisterUser() {
 
                 <div>
                 <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="password"
                     value={password}
                     onChange={(e) => {
                     setPassword(e.target.value);
                     }}
                 />
+                <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => !prev)}
+                    style={{
+                        right: "5px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        cursor: "pointer"
+                    }}
+                >
+                    {showPassword ? "Hide" : "Show"}
+                </button>
                 </div>
 
                 <button type="submit" disabled={loading}>

@@ -12,6 +12,8 @@ import CreateProductPage from './pages/user_page/Create-Product-Page';
 import UserProductPage from './pages/user_page/User-Product-Page';
 import PublicShopPage from './pages/public_page/Public-Shop-Page'
 import OrderFormPage from './pages/public_page/Order-Form-Page';
+import ForgetPasswordPage from "./pages/Forget-Password-Page";
+import ResetPasswordPage from "./pages/Reset-Password-Page";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/register-user" element={<RegisterUser/>} />
         <Route path="/unauthorized" element={<Unauthorized/>} />
         <Route path="/verify-email" element={<VerifyEmail/>} />
+        <Route path ="/forgot-password" element={<ForgetPasswordPage/>} />
+        <Route path ="/reset-password" element={<ResetPasswordPage/>} />
         {/* user */}
         <Route path="/dashboard-user" element={<DashboardUser/>} />
         <Route path="/dashboard-user/shop/:id" element={<UserShopPage/>} />

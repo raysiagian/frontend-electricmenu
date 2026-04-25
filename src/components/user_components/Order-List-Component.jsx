@@ -54,7 +54,7 @@ function OrderListComponent ({shop_id, status}) {
                 <table className={tableStyles.table}>
                     <thead>
                         <tr>
-                            <th  className={tableStyles.th}>ID</th>
+                            {/* <th  className={tableStyles.th}>ID</th> */}
                             <th  className={tableStyles.th}>Pembeli</th>
                             <th  className={tableStyles.th}>Total</th>
                             <th  className={tableStyles.th}>Status</th>
@@ -65,7 +65,7 @@ function OrderListComponent ({shop_id, status}) {
                     <tbody>
                         {orders.map((order) => (
                             <tr key={order.id}>
-                                <td className={tableStyles.td}>{order.id}</td>
+                                {/* <td className={tableStyles.td}>{order.id}</td> */}
                                 <td className={tableStyles.td}>{order.buyer_name}</td>
                                 <td className={tableStyles.td}>
                                     Rp.{Number(order.grand_total).toLocaleString("id-ID")}

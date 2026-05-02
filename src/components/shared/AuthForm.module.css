@@ -1,0 +1,169 @@
+.page {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.background-image{
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    object-fit: cover;
+    filter: brightness(0.6) blur(4px);
+    transform: scale(1.05);
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+    /* margin: var(--spacing-lg); */
+    padding: var(--spacing-xl);
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.title {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-700);
+}
+
+.subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-500);
+    margin-top: calc(var(--spacing-xs) * -1); /* rapatkan ke title */
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-700);
+}
+
+.input {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: var(--border-width-thin) var(--border-style-solid) var(--border-color-gray);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-700);
+    background: var(--color-white);
+    transition: border-color var(--transition-fast);
+}
+
+.input:focus {
+    border-color: var(--color-primary);
+}
+
+
+.input:focus {
+    border-color: var(--color-primary);
+}
+
+
+
+.input.input-error {
+    border-color: #ef4444;
+}
+
+/* Password wrapper */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper .input {
+    padding-right: 56px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-500);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    transition: color var(--transition-fast);
+}
+
+.toggle-password:hover {
+    color: var(--color-primary);
+}
+
+/* ===========================
+    FEEDBACK
+=========================== */
+.error-text {
+    font-size: var(--font-size-xs);
+    color: #ef4444;
+}
+
+.success-text {
+    font-size: var(--font-size-xs);
+    color: #22c55e;
+}
+
+/* ===========================
+    ACTIONS
+=========================== */
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+}
+
+.forgot-password {
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-500);
+    text-align: right;
+    transition: color var(--transition-fast);
+}
+
+.forgot-password:hover {
+    color: var(--color-primary);
+}
+
+.divider {
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-500);
+}

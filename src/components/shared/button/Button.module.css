@@ -1,0 +1,46 @@
+.btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    transition: opacity var(--transition-fast);
+    cursor: pointer;
+}
+
+/* Variants */
+.primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.outline {
+    background: transparent;
+    color: var(--color-primary);
+    border: var(--border-width-medium) var(--border-style-solid) var(--border-color-primary);
+}
+
+.outline:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.ghost {
+    background: transparent;
+    color: var(--color-gray-700);
+}
+
+.ghost:hover {
+    background-color: var(--color-gray-100);
+}
+
+/* Sizes */
+.sm { padding: var(--spacing-xs) var(--spacing-md); font-size: var(--font-size-xs); }
+.md { padding: var(--spacing-sm) var(--spacing-lg); font-size: var(--font-size-sm); }
+.lg { padding: var(--spacing-md) var(--spacing-xl); font-size: var(--font-size-md); }
+
+/* States */
+.full { width: 100%; }

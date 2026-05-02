@@ -59,8 +59,6 @@ function ProductListComponent({ shop_id, search }) {
     
     return (
         <div>
-            <h2>Product List</h2>
-
             {loading && <p>Loading...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -85,7 +83,7 @@ function ProductListComponent({ shop_id, search }) {
                             <tr key={product.id}>
                                 {/* <td style={tdStyle}>{product.id ?? "-"}</td> */}
                                 <td>
-                                    <Link className={styles.productName} to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
+                                    <Link className={styles.textLink} to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
                                         {product.product_name}
                                     </Link>
                                 </td>

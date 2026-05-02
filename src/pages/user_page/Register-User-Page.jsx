@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { registerUser } from "../../services/auth-service";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/shared/button/Button";
+import styles from "../../components/shared/AuthForm.module.css"
+import typography from "../../components/shared/Typography.module.css"
+import backgroundImage from "../../assets/images/background_image.png"
 
 function RegisterUser() {
     const [name, setName] = useState("");
@@ -51,75 +55,93 @@ function RegisterUser() {
         } catch (err) {
             console.log("ERROR:", err.response?.data || err.message);
 
-            alert(
-                err.response?.data?.error ||
+            const message =
                 err.response?.data?.message ||
-                "Terjadi kesalahan"
-            );
+                err.response?.data?.error ||
+                "Terjadi kesalahan";
+
+            setError(message);
+
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div>
-            <h2>Sign Up</h2>
+        <div className={styles.page}>
+            <img src={backgroundImage} className={styles["background-image"]} alt="" />
+            <div className={styles.overlay}>
+                <div className={styles.card}>
+                <h2>Sign Up</h2>
+                <p className={styles.subtitle}>Get start and create your account</p>            
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.field}>
+                        <label className={styles.label}>Name</label>
+                        <input
+                            className={styles.input}    
+                            type="text" 
+                            placeholder="name"
+                            value={name}
+                            onChange={(e) => {
+                                console.log("Name INPUT:", e.target.value);
+                                setName(e.target.value);
+                            }} 
+                        />
+                    </div>
 
-            
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input 
-                        type="text" 
-                        placeholder="name"
-                        value={name}
-                        onChange={(e) => {
-                            console.log("Name INPUT:", e.target.value);
-                            setName(e.target.value);
-                        }} 
-                    />
+                    <div className={styles.field}>
+                        <label className={styles.label}>Email</label>
+                        <input
+                            className={styles.input}
+                            type="email"
+                            placeholder="email"
+                            value={email}
+                            onChange={(e) => {
+                            setEmail(e.target.value);
+                            }}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <label className={styles.label}>Password</label>
+                        <div className={styles["input-wrapper"]}>
+                            <input
+                                className={styles.input}
+                                type={showPassword ? "text" : "password"}
+                                placeholder="password"
+                                value={password}
+                                onChange={(e) => {
+                                // console.log("PASSWORD INPUT:", e.target.value);
+                                setPassword(e.target.value);
+                                }}
+                            />
+                            <button
+                                className={styles["toggle-password"]}
+                                type="button"
+                                onClick={() => setShowPassword(prev => !prev)}
+                                style={{
+                                    right: "5px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                {showPassword ? "Hide" : "Show"}
+                            </button>
+                        </div>
+                    </div>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+
+                    <div className={styles.actions}>
+                        <Button variant="primary" type="submit" disabled={loading}>
+                            {loading ? "Loading..." : "Sign Up"}
+                        </Button>
+                        <p className={styles.divider}>Already have an account?</p>
+                        <Button variant="outline" onClick={() => navigate("/login")}> Sign In</Button>
+                    </div>
+                </form>
                 </div>
-
-                <div>
-                <input
-                    type="email"
-                    placeholder="email"
-                    value={email}
-                    onChange={(e) => {
-                    setEmail(e.target.value);
-                    }}
-                />
-                </div>
-
-                <div>
-                <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="password"
-                    value={password}
-                    onChange={(e) => {
-                    setPassword(e.target.value);
-                    }}
-                />
-                <button
-                    type="button"
-                    onClick={() => setShowPassword(prev => !prev)}
-                    style={{
-                        right: "5px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        cursor: "pointer"
-                    }}
-                >
-                    {showPassword ? "Hide" : "Show"}
-                </button>
-                </div>
-
-                <button type="submit" disabled={loading}>
-                    {loading ? "Loading..." : "Sign Up"}
-                </button>
-            </form>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-
-            <button onClick={() => navigate("/login")}>Sign In</button>
+            </div>
         </div>
     );
 }

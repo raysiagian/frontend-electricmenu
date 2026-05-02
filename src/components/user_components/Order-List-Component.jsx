@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllOrderByShopID } from "../../services/order-service";
+import { getAllOrderByShopID, updateOrderStatus } from "../../services/order-service";
 import tableStyles from "../shared/Table.module.css";
 import PopUpModal from "../shared/Pop-Up-Modal";
 
@@ -39,9 +39,21 @@ function OrderListComponent ({shop_id, status}) {
         return () => clearTimeout(delay)
     }, [shop_id, status, page])
 
+    const handleUpdateStatus = async (order_id, status) => {
+        try {
+            const res = await updateOrderStatus(order_id, status);
+            // Update state lokal agar tidak perlu refetch
+            setOrders(prev => prev.map(o => 
+                o.id === order_id ? { ...o, status: res.order.status } : o
+            ));
+            setSelectedOrder(prev => ({ ...prev, status: res.order.status }));
+        } catch (err) {
+            console.error(err.response?.data || err.message);
+        }
+    };
+
     return (
         <div>
-            <h2>Order List</h2>
             
             {loading && <p>Loading...</p>}
             {error && <p style={{ color: "red" }}>{error}</p>}
@@ -55,11 +67,11 @@ function OrderListComponent ({shop_id, status}) {
                     <thead>
                         <tr>
                             {/* <th  className={tableStyles.th}>ID</th> */}
-                            <th  className={tableStyles.th}>Pembeli</th>
+                            <th  className={tableStyles.th}>Buyer</th>
                             <th  className={tableStyles.th}>Total</th>
-                            <th  className={tableStyles.th}>Status</th>
-                            <th  className={tableStyles.th}>Tanggal</th>
-                            <th  className={tableStyles.th}>Aksi</th>
+                            <th  className={tableStyles.th}>Order Status</th>
+                            <th  className={tableStyles.th}>Order Date</th>
+                            <th  className={tableStyles.th}>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,7 +91,7 @@ function OrderListComponent ({shop_id, status}) {
                                         Lihat Item
                                     </button> */}
                                     <button onClick={() => setSelectedOrder(order)}>
-                                        Lihat Detail
+                                        See Detail
                                     </button>
                                 </td>
                             </tr>
@@ -116,6 +128,19 @@ function OrderListComponent ({shop_id, status}) {
                         <p>Pembeli: {selectedOrder.buyer_name}</p>
                         <p>Status: {selectedOrder.status}</p>
                         <p>Tanggal: {new Date(selectedOrder.created_at).toLocaleDateString("id-ID")}</p>
+
+                        {/* Update Status */}
+                        <div>
+                            <label>Status: </label>
+                            <select
+                                value={selectedOrder.status}
+                                onChange={(e) => handleUpdateStatus(selectedOrder.id, e.target.value)}
+                            >
+                                <option value="pending">Pending</option>
+                                <option value="done">Done</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
 
                         <h4>Item Pesanan</h4>
                         <table className={tableStyles.table}>

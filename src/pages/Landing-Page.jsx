@@ -1,22 +1,60 @@
 import { useNavigate } from "react-router-dom";
+import { Button } from "../components/shared/button/Button";
+import { Accordion } from "../components/shared/accordion/Accordion";
+import typography from "../components/shared/Typography.module.css"
+import style from './Landing-Page.module.css';
+import heroImage from '../assets/images/hero_image.png'
 
 function LandingPage(){
+
+    const FAQ_ITEMS = [
+        {
+            question: 'What is Emenu?',
+            answer: 'Emenu is a SaaS platform built for small and medium businesses. Organize your products, manage services, and track every transaction, all from a single, simple system.',
+        },
+        {
+            question: 'How it works?',
+            answer: 'Sign up. Create your store. Share your QR code. Let customers explore your products and services instantly, while you stay in control from a single dashboard.',
+        },
+    ];
 
     const navigate = useNavigate();
 
     return(
         
-        <div>
-            <p>
-                Manage shop never been easy than ever
-            </p>
+        <div className={style.page}>
+            {/* tagline */}
+            <div className={style.hero}>
+                <img src={heroImage} alt="hero-image"  className={style["hero-background-image"]}/>
+                <div className={style["hero-content"]}>
+                    <h1 className={typography["heading-xl"]}>
+                        Run your shop. Effortlessly.
+                    </h1>
 
-            <div>
-                <button onClick={() => navigate("/login")}>Sign In</button>
-                <button onClick={() => navigate("/register-user")}>Sign Up</button>
+                    <p className={typography["body-md"]}>
+                        Everything you need to manage your business in one place.
+                    </p>
+
+                    <div>
+                        <Button variant="primary" onClick={() => navigate("/register-user")}>
+                            Get Started
+                        </Button>
+                        <Button variant="outline" onClick={() => navigate("/login")}>
+                            Sign In
+                        </Button>
+                    </div>
+                </div>
             </div>
-        </div>
+            
+            {/* FAQ */}
+            <div className={style.content}>
+                <div>
+                    <h2 className={typography["heading-lg"]}>You asking, We delivere</h2>
+                    <Accordion items={FAQ_ITEMS} />
+                </div>
+            </div>
 
+        </div>
     )
 
 }

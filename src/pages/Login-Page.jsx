@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { login } from "../services/auth-service";
+import { Button } from "../components/shared/button/Button";
 import { useNavigate, useLocation } from "react-router-dom";
+import styles from "../components/shared/AuthForm.module.css"
+import typography from "../components/shared/Typography.module.css"
+import backgroundImage from '../assets/images/background_image.png'
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -72,62 +76,80 @@ function Login() {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
+        <div className={styles.page}>
+            <img src={backgroundImage} className={styles["background-image"]} alt="" />
+            <div className={styles.overlay}>
+                <div className={styles.card}>
+                    <h2 className={styles.title}>Sign In</h2>
+                    <p className={styles.subtitle}>Log in into your account</p>
 
-            {location.state?.message && (
-                <p style={{ color: "green" }}>
-                    {location.state.message}
-                </p>
-            )}
+                    {location.state?.message && (
+                        <p style={{ color: "green" }}>
+                            {location.state.message}
+                        </p>
+                    )}
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                <input
-                    type="email"
-                    placeholder="email"
-                    value={email}
-                    onChange={(e) => {
-                    // console.log("EMAIL INPUT:", e.target.value);
-                    setEmail(e.target.value);
-                    }}
-                />
+                    <form className={styles.form} onSubmit={handleSubmit}>
+                        <div className={styles.field}>
+                            <label className={styles.label}>Email</label>
+                            <input
+                                className={styles.input}
+                                type="email"
+                                placeholder="email"
+                                value={email}
+                                onChange={(e) => {
+                                // console.log("EMAIL INPUT:", e.target.value);
+                                setEmail(e.target.value);
+                                }}
+                            />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label className={styles.label}>Password</label>
+                                <div className={styles["input-wrapper"]}>
+                                    <input
+                                        className={styles.input}
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="password"
+                                        value={password}
+                                        onChange={(e) => {
+                                        // console.log("PASSWORD INPUT:", e.target.value);
+                                        setPassword(e.target.value);
+                                        }}
+                                    />
+                                    <button
+                                        className={styles["toggle-password"]}
+                                        type="button"
+                                        onClick={() => setShowPassword(prev => !prev)}
+                                        style={{
+                                            right: "5px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            cursor: "pointer"
+                                        }}
+                                    >
+                                        {showPassword ? "Hide" : "Show"}
+                                    </button>
+                                </div>
+                            </div>
+                            <a href="/forgot-password" className={styles["forgot-password"]}>
+                                Forgot Password?
+                            </a>
+
+                            {error && <p className={styles.errorText}>{error}</p>}
+
+                            <div className={styles.actions}>
+                                <Button variant="primary" type="submit" full disabled={loading}>
+                                {loading ? "Loading..." : "Sign In"}
+                                </Button>
+                                <p className={styles.divider}>Didnt have an account?</p>
+                                <Button variant="outline" full onClick={() => navigate("/register-user")}>
+                                Sign Up
+                                </Button>
+                            </div>
+                        </form>
                 </div>
-
-                <div>
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="password"
-                        value={password}
-                        onChange={(e) => {
-                        // console.log("PASSWORD INPUT:", e.target.value);
-                        setPassword(e.target.value);
-                        }}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(prev => !prev)}
-                        style={{
-                            right: "5px",
-                            top: "50%",
-                            transform: "translateY(-50%)",
-                            cursor: "pointer"
-                        }}
-                    >
-                        {showPassword ? "Hide" : "Show"}
-                    </button>
-                </div>
-
-                <button type="submit" disabled={loading}>
-                    {loading ? "Loading..." : "Sign In"}
-                </button>
-            </form>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-
-            <button onClick={() => navigate("/register-user")}>Sign Up</button>
-            <Link to={`/forgot-password`}>
-                Forgot Password
-            </Link>
+            </div>
         </div>
     );
 }

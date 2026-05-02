@@ -1,0 +1,61 @@
+.page{
+    min-height: 100vh;
+}
+
+.hero{
+    /* gap: var(--spacing-lg); */
+    /* padding: var(--spacing-xl) var(--spacing-lg); */
+    background: var(--color-white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.8) 0%,
+        rgba(0,0,0,0.4) 40%,
+        rgba(0,0,0,0)
+    ); */
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 0%,   /* bawah gelap */
+        rgba(0, 0, 0, 0.4) 40%,  /* tengah agak gelap */
+        rgba(0, 0, 0, 0) 70%     /* atas transparan */
+    );
+    z-index: 2;
+}
+
+.hero-background-image{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    object-fit: cover;
+    filter: brightness(0.6);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl) var(--spacing-lg);
+}

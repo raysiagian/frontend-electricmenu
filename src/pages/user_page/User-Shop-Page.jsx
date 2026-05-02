@@ -84,6 +84,7 @@ function UserShopPage() {
              {/* Konten Tab */}
             {activeTab === "products" && (
                 <div>
+                    <h2>Product List</h2>
                     {/* Search hanya di tab product */}
                     <SearchBarComponent
                         value={search}
@@ -96,9 +97,10 @@ function UserShopPage() {
 
             {activeTab === "orders" && (
                 <div>
+                    <h2>Order List</h2>
                     {/* Filter status hanya di tab order */}
                     <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                        <option value="">Semua</option>
+                        <option value="">All</option>
                         <option value="pending">Pending</option>
                         <option value="done">Done</option>
                         <option value="cancelled">Cancelled</option>

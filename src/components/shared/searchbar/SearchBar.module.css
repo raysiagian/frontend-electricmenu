@@ -1,6 +1,6 @@
-.searchContainer {
+.search-container {
   display: flex;
-  max-width: 400px;
+  /* max-width: 400px; */
 
   border: var(--border-width-medium) var(--border-style-solid) var(--border-color-gray);
   border-radius: var(--radius-lg);
@@ -9,7 +9,7 @@
   background-color: var(--color-white);
 }
 
-.searchBox {
+.search-box {
   flex-grow: 1;
   border: none;
 
@@ -20,7 +20,7 @@
   outline: none;
 }
 
-.searchButton {
+.search-button {
   background-color: var(--color-secondary);
   color: var(--color-white);
 
@@ -31,6 +31,6 @@
   transition: var(--transition-fast);
 }
 
-.searchButton:hover {
+.search-button:hover {
   background-color: var(--color-primary-dark);
 }

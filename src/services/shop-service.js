@@ -1,8 +1,8 @@
 import api from "./api";
 import publicApi from "./public-api.js";
 
-export const getUserShops = async () => {
-    const res = await api.get("/shop/get-shops");
+export const getUserShops = async (page = 1, limit = 10) => {
+    const res = await api.get(`/shop/get-shops?page=${page}&limit=${limit}`);
     return res.data;
 };
 
@@ -13,6 +13,19 @@ export const getShop = async (id) => {
 
 export const createShop = async (data) => {
     const res = await api.post("/shop/create-shop", data)
+    return res.data
+}
+
+export const searchShopUser = async ({search = "", page = 1, limit = 10, sort = "created_at", order = "desc"}) => {
+    const res = await api.get(`/shop/search`,{
+        params: {
+            search,
+            page,
+            limit,
+            sort,
+            order
+        }
+    })
     return res.data
 }
 

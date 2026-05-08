@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getPublicShop } from "../../services/shop-service";
 import ProductListPublicComponent from "../../components/public_components/Product-List-Public-Components";
 import OrderModalComponent from "../../components/public_components/Order-Modal-Component";
-import SearchBarComponent from "../../components/shared/Search-Bar-Component";
+import SearchBarComponent from "../../components/shared/searchbar/Search-Bar-Component";
 
 function PublicShopPage() {
     const { shop_slug } = useParams();

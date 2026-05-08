@@ -3,7 +3,6 @@ import { registerUser } from "../../services/auth-service";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/shared/button/Button";
 import styles from "../../components/shared/AuthForm.module.css"
-import typography from "../../components/shared/Typography.module.css"
 import backgroundImage from "../../assets/images/background_image.png"
 
 function RegisterUser() {

@@ -1,0 +1,92 @@
+.card {
+    border: var(--border-width-thin) solid var(--border-color-gray);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    overflow: hidden;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+}
+
+.cardInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.buyerName {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-700);
+}
+
+.shopName {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-500);
+}
+
+.date {
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-500);
+}
+
+.cardRight {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-xs);
+}
+
+.total {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-700);
+}
+
+.toggleBtn {
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: var(--border-width-thin) solid var(--border-color-primary);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+
+.toggleBtn:hover {
+    background: var(--color-gray-100);
+}
+
+.detail {
+    border-top: var(--border-width-thin) solid var(--border-color-gray);
+    padding: var(--spacing-md);
+    background: var(--color-gray-100);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+}
+
+.th {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    text-align: left;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-700);
+    border-bottom: var(--border-width-thin) solid var(--border-color-gray);
+}
+
+.tr:hover {
+    background: var(--color-white);
+}
+
+.td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    color: var(--color-gray-700);
+    border-bottom: var(--border-width-thin) solid var(--border-color-gray);
+}

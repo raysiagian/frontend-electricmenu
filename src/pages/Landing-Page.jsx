@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/shared/button/Button";
 import { Accordion } from "../components/shared/accordion/Accordion";
-import typography from "../components/shared/Typography.module.css"
 import style from './Landing-Page.module.css';
 import heroImage from '../assets/images/hero_image.png'
 
@@ -27,15 +26,15 @@ function LandingPage(){
             <div className={style.hero}>
                 <img src={heroImage} alt="hero-image"  className={style["hero-background-image"]}/>
                 <div className={style["hero-content"]}>
-                    <h1 className={typography["heading-xl"]}>
+                    <h1 className={style["hero-title"]}>
                         Run your shop. Effortlessly.
                     </h1>
 
-                    <p className={typography["body-md"]}>
+                    <p className={style["hero-subtitle"]}>
                         Everything you need to manage your business in one place.
                     </p>
 
-                    <div>
+                    <div className={style["hero-button"]}>
                         <Button variant="primary" onClick={() => navigate("/register-user")}>
                             Get Started
                         </Button>
@@ -49,7 +48,7 @@ function LandingPage(){
             {/* FAQ */}
             <div className={style.content}>
                 <div>
-                    <h2 className={typography["heading-lg"]}>You asking, We delivere</h2>
+                    <h2 className={style["faq-title"]}>You asking, We delivere</h2>
                     <Accordion items={FAQ_ITEMS} />
                 </div>
             </div>

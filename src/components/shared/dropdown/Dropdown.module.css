@@ -1,0 +1,68 @@
+.wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tombol trigger */
+.trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-700);
+    background: var(--color-white);
+    border: var(--border-width-thin) solid var(--border-color-gray);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.trigger:hover {
+    background: var(--color-gray-100);
+}
+
+.arrow {
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-500);
+}
+
+/* Menu */
+.menu {
+    position: absolute;
+    top: calc(100% + var(--spacing-xs));
+    right: 0;
+    min-width: 160px;
+    background: var(--color-white);
+    border: var(--border-width-thin) solid var(--border-color-gray);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+    list-style: none;
+    overflow: hidden;
+}
+
+/* Item */
+.item {
+    width: 100%;
+    text-align: left;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-700);
+    background: none;
+    transition: background var(--transition-fast);
+}
+
+.item:hover {
+    background: var(--color-gray-100);
+}
+
+/* Variant danger (delete, dll) */
+.danger {
+    color: #ef4444;
+}
+
+.danger:hover {
+    background: #fef2f2;
+}

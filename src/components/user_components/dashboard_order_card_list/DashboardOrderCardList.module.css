@@ -1,0 +1,27 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.title {
+    font-size: var(--font-size-h5);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-700);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.error {
+    font-size: var(--font-size-sm);
+    color: #ef4444;
+}
+
+.empty {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-500);
+}

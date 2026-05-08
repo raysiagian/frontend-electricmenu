@@ -3,13 +3,13 @@ import LandingPage from './pages/Landing-Page';
 import Login from "./pages/Login-Page";
 import RegisterUser from './pages/user_page/Register-User-Page';
 import VerifyEmail from './pages/Verify-Email-Page';
-import DashboardUser from './pages/user_page/Dashboard-User-Page';
+import DashboardUser from "./pages/user_page/dashboard_user_page/Dashboard-User-Page";
 import DashboardAdmin from './pages/admin_page/Dashboard-Admin-Page';
 import Unauthorized from './pages/Unauthorized-Page';
-import UserShopPage from './pages/user_page/User-Shop-Page';
+import UserShopPage from "./pages/user_page/user_shop_page/User-Shop-Page";
 import CreateShopPage from './pages/user_page/Create-Shop-Page';
 import CreateProductPage from './pages/user_page/Create-Product-Page';
-import UserProductPage from './pages/user_page/User-Product-Page';
+import UserProductPage from "./pages/user_page/user_product_page/User-Product-Page";
 import PublicShopPage from './pages/public_page/Public-Shop-Page'
 import OrderFormPage from './pages/public_page/Order-Form-Page';
 import ForgetPasswordPage from "./pages/Forget-Password-Page";

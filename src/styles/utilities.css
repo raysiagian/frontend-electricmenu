@@ -72,9 +72,9 @@
     width: 100%;
 }
 
-.gap-sm { gap: var(--spacing-sm); }
+/* .gap-sm { gap: var(--spacing-sm); }
 .gap-md { gap: var(--spacing-md); }
 .gap-lg { gap: var(--spacing-lg); }
 
 .gap-x-md { column-gap: var(--spacing-md); }
-.gap-y-md { row-gap: var(--spacing-md); }
+.gap-y-md { row-gap: var(--spacing-md); } */

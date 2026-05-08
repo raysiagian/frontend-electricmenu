@@ -4,7 +4,6 @@ import { login } from "../services/auth-service";
 import { Button } from "../components/shared/button/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "../components/shared/AuthForm.module.css"
-import typography from "../components/shared/Typography.module.css"
 import backgroundImage from '../assets/images/background_image.png'
 
 function Login() {

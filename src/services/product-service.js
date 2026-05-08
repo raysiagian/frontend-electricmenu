@@ -71,6 +71,11 @@ export const updateProductAvailability = async (id) => {
     return res.data
 }
 
+export const getAllProductUser = async ([page = 1, limit = 10]) => {
+    const res = await api.get(`/product/get-all-product?page=${page}&limit=${limit}`)
+    return res.data
+}
+
 
 // public
 export const getProductByShopPublic = async (shop_slug, page = 1, limit = 10) => {

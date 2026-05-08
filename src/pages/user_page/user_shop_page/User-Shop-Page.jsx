@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getShop } from "../../services/shop-service";
-import ProductListComponent from "../../components/user_components/Product-List-Components";
-import SearchBarComponent from "../../components/shared/Search-Bar-Component";
-import OrderListComponent from "../../components/user_components/Order-List-Component";
+import { getShop } from "../../../services/shop-service";
+import ProductListComponent from "../../../components/user_components/Product-List-Components";
+import SearchBarComponent from "../../../components/shared/searchbar/Search-Bar-Component";
+import OrderListComponent from "../../../components/user_components/Order-List-Component";
+import styles from './UserShopPage.module.css';
+import { Button } from "../../../components/shared/button/Button";
+import Dropdown from "../../../components/shared/dropdown/Dropdown";
 
 function UserShopPage() {
     const { id } = useParams();
@@ -14,7 +17,19 @@ function UserShopPage() {
 
     const navigate = useNavigate();
 
-    console.log(shop);
+    // console.log(shop);
+
+    const manageItems = [
+        {
+            label: "Edit Shop",
+            onClick: () => console.log("delete shop")
+        },
+        {
+            label: "Delete Shop",
+            danger: true,
+            onClick: () => console.log("delete shop")
+        },
+    ];
 
     const handleCopy = () => {
         if (shop?.shop_url) {
@@ -53,16 +68,21 @@ function UserShopPage() {
     }, [id]);
 
     return (
-        <div>
+        <div className={styles.page}>
             {/* Info Shop */}
-            <div>
+            <div className={styles.header}>
                 <div>
-                    <img src={shop?.qr_url} alt="QR Code" />
+                    <img className={styles["qr-image"]} src={shop?.qr_url} alt="QR Code" />
                 </div>
-                <p>{shop?.shop_name}</p>
-                <button onClick={handleDownloadQR}>Download QR</button>
-                <button onClick={handleCopy}>Copy Link</button>
-                <button onClick={() => navigate(`/dashboard-user/shop/${id}/create-product`)}>Add Product</button>
+                <div>
+                    <p>{shop?.shop_name}</p>
+                    <div className={styles["shop-widget"]}>
+                        <button className={styles["widget-button"]} onClick={handleDownloadQR}>Download QR</button>
+                        <button className={styles["widget-button"]} onClick={handleCopy}>Copy Link</button>
+                        {/* dropdown untuk edit dan delete shop */}
+                        <Dropdown label="Manage Shop" items={manageItems} />
+                    </div>
+                </div>
             </div>
 
              {/* Tab */}
@@ -83,28 +103,33 @@ function UserShopPage() {
             
              {/* Konten Tab */}
             {activeTab === "products" && (
-                <div>
-                    <h2>Product List</h2>
+                <div className={styles["tab-content"]}>
+                    <div className={styles["tab-title"]}>
+                        <h2>Product List</h2>
+                        <Button variant="primary" onClick={() => navigate(`/dashboard-user/shop/${id}/create-product`)}>Add Product</Button>
+                    </div>
                     {/* Search hanya di tab product */}
                     <SearchBarComponent
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Cari produk..."
+                        placeholder="Search product"
                     />
                     <ProductListComponent shop_id={Number(id)} search={search} />
                 </div>
             )}
 
             {activeTab === "orders" && (
-                <div>
-                    <h2>Order List</h2>
-                    {/* Filter status hanya di tab order */}
-                    <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                        <option value="">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="done">Done</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
+                <div className={styles["tab-content"]}>
+                    <div className={styles["tab-title"]}>
+                        <h2>Order List</h2>
+                        {/* Filter status hanya di tab order */}
+                        <select className={styles.select} value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <option value="">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="done">Done</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
                     <OrderListComponent shop_id={Number(id)} status={status} />
                 </div>
             )}

@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProductByID, getProductByShopIDAndProductID, getProductStatsByID, editProduct, deleteProduct, updateProductAvailability } from "../../services/product-service";
-import ToggleSwitchComponent from "../../components/shared/Toggle-Switch-Component";
-import { searchTypes } from "../../services/type-service";
-import PopUpModal from "../../components/shared/Pop-Up-Modal";
+import { getProductByID, getProductByShopIDAndProductID, getProductStatsByID, editProduct, deleteProduct, updateProductAvailability } from "../../../services/product-service";
+import ToggleSwitchComponent from "../../../components/shared/Toggle-Switch-Component";
+import { searchTypes } from "../../../services/type-service";
+import PopUpModal from "../../../components/shared/Pop-Up-Modal";
 
 function UserProductPage (){
 

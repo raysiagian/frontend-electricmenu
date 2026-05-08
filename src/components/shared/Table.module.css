@@ -14,3 +14,9 @@
     border: 1px solid #ccc;
     padding: 8px;
 }
+
+.table-text-link {
+    font-size: var(--font-size-p);
+    color: var(--color-secondary);
+    font-weight: var(--font-weight-semibold);
+}

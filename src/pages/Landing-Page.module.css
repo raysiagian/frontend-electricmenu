@@ -19,6 +19,18 @@
     ); */
 }
 
+.hero-title{
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+}
+
+.hero-subtitle{
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-white);
+}
+
 .hero::before {
     content: "";
     position: absolute;
@@ -53,9 +65,22 @@
     align-items: center;
     height: 100%;
     width: 100%;
+    gap: var(--spacing-md)
+}
+
+.hero-button{
+    display: flex;
+    flex-direction: row;
+    column-gap: var(--spacing-md);
 }
 
 .content {
     gap: var(--spacing-lg);
     padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.faq-title{
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-black);
 }

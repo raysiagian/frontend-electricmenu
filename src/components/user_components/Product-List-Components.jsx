@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getUserShopProducts, searchProductByShop } from "../../services/product-service";
 import { Link } from "react-router-dom";
 import styles from "./ProductList.module.css"
+import tableStyles from "../shared/Table.module.css";
 
 function ProductListComponent({ shop_id, search }) {
     const [products, setProducts] = useState([]);
@@ -38,7 +39,7 @@ function ProductListComponent({ shop_id, search }) {
                 setProducts(data.products || []);
                 setPagination(data.pagination || null);
 
-                console.log(data.products)
+                // console.log(data.products)
 
             } catch (err) {
                 console.log("ERROR:", err.response?.data || err.message);
@@ -67,32 +68,32 @@ function ProductListComponent({ shop_id, search }) {
             )}
 
             {!loading && products.length > 0 && (
-                <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <table className={tableStyles.table}>
                     <thead>
                         <tr>
-                            {/* <th style={thStyle}>ID</th> */}
-                            <th style={thStyle}>Nama Produk</th>
-                            <th style={thStyle}>Harga</th>
-                            <th style={thStyle}>Stok</th>
-                            <th style={thStyle}>Service Type</th>
-                            <th style={thStyle}>Ketersediaan</th>
+                            {/* <th className={tableStyles.th}>ID</th> */}
+                            <th className={tableStyles.th}>Product Name</th>
+                            <th className={tableStyles.th}>Price</th>
+                            <th className={tableStyles.th}>Stock</th>
+                            <th className={tableStyles.th}>Service Type</th>
+                            <th className={tableStyles.th}>Avaliability</th>
                         </tr>
                     </thead>
                     <tbody>
                         {products.map((product) => (
                             <tr key={product.id}>
                                 {/* <td style={tdStyle}>{product.id ?? "-"}</td> */}
-                                <td>
-                                    <Link className={styles.textLink} to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
+                                <td className={tableStyles.td}>
+                                    <Link className={tableStyles["table-text-link"]} to={`/dashboard-user/shop/${shop_id}/product/${product.id}`}>
                                         {product.product_name}
                                     </Link>
                                 </td>
-                                <td style={tdStyle}>
+                                <td className={tableStyles.td}>
                                     Rp.{Number(product.price).toLocaleString("id-ID")}
                                 </td>
-                                <td style={tdStyle}>{product.stock ?? "-"}</td>
-                                <td style={tdStyle}>{product.service_type}</td>
-                                <td style={tdStyle}>
+                                <td className={tableStyles.td}>{product.stock ?? "-"}</td>
+                                <td className={tableStyles.td}>{product.service_type}</td>
+                                <td className={tableStyles.td}>
                                     {Boolean(product.is_available) ? "Tersedia" : "Tidak Tersedia"}
                                 </td>
                             </tr>
@@ -126,17 +127,5 @@ function ProductListComponent({ shop_id, search }) {
         </div>
     );
 }
-
-const thStyle = {
-    border: "1px solid #ccc",
-    padding: "8px",
-    textAlign: "left",
-    backgroundColor: "#f5f5f5"
-};
-
-const tdStyle = {
-    border: "1px solid #ccc",
-    padding: "8px"
-};
 
 export default ProductListComponent;

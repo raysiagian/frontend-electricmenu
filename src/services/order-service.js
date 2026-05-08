@@ -20,3 +20,8 @@ export const updateOrderStatus = async (order_id, status) => {
     const res = await api.patch(`/order/${order_id}/status`, { status });
     return res.data;
 };
+
+export const getUserPendingOrders = async () => {
+    const res = await api.get("order/pending-orders")
+    return res.data
+}

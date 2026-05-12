@@ -129,7 +129,7 @@ function RegisterUser() {
                             </button>
                         </div>
                     </div>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    {error && <p className={styles["error-text"]}>{error}</p>}
 
                     <div className={styles.actions}>
                         <Button variant="primary" type="submit" disabled={loading}>

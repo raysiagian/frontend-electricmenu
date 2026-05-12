@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserShops, searchShopUser } from "../../services/shop-service";
-import ShopCardComponent from "./Shop-Card-Component";
 import tableStyles from "../shared/Table.module.css";
 
 function ShopListComponent({search}){

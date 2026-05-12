@@ -9,6 +9,14 @@ export const createOrder = async ({ shop_slug, buyer_name, items }) => {
     return res.data;
 };
 
+export const createWalkInOrder = async ({shop_id, buyer_name, items}) => {
+    const res = await api.post(`order/shop/${shop_id}/create-walk-order`,{
+        buyer_name,
+        items
+    })
+    return res.data;
+}
+
 export const getAllOrderByShopID = async (shop_id, { page = 1, limit = 10, status } = {}) => {
     const res = await api.get(`/order/shop/${shop_id}/get-shop-order`, {
         params: { page, limit, status }  // ← status opsional, kalau undefined tidak dikirim

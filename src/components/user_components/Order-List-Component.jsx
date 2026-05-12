@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllOrderByShopID, updateOrderStatus } from "../../services/order-service";
 import tableStyles from "../shared/Table.module.css";
-import PopUpModal from "../shared/Pop-Up-Modal";
+import PopUpModal from "../shared/popup/Pop-Up-Modal";
 
 function OrderListComponent ({shop_id, status}) {
     const [orders, setOrders] = useState([])

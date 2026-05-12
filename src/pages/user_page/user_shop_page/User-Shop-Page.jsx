@@ -7,6 +7,8 @@ import OrderListComponent from "../../../components/user_components/Order-List-C
 import styles from './UserShopPage.module.css';
 import { Button } from "../../../components/shared/button/Button";
 import Dropdown from "../../../components/shared/dropdown/Dropdown";
+import Tab from "../../../components/shared/tab/Tab";
+import WalkInOrderModal from "../../../components/user_components/walk_in_order_modal/Walk-In-Order-Modal";
 
 function UserShopPage() {
     const { id } = useParams();
@@ -14,6 +16,7 @@ function UserShopPage() {
     const [activeTab, setActiveTab] = useState("products");
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("");
+    const [openWalkInModal, setOpenWalkInModal] = useState(false);
 
     const navigate = useNavigate();
 
@@ -29,6 +32,11 @@ function UserShopPage() {
             danger: true,
             onClick: () => console.log("delete shop")
         },
+    ];
+
+    const SHOP_TABS = [
+        { label: "Products", value: "products" },
+        { label: "Orders",   value: "orders"   },
     ];
 
     const handleCopy = () => {
@@ -75,10 +83,13 @@ function UserShopPage() {
                     <img className={styles["qr-image"]} src={shop?.qr_url} alt="QR Code" />
                 </div>
                 <div>
-                    <p>{shop?.shop_name}</p>
+                    <p className={styles["shop-name"]}>{shop?.shop_name}</p>
                     <div className={styles["shop-widget"]}>
-                        <button className={styles["widget-button"]} onClick={handleDownloadQR}>Download QR</button>
-                        <button className={styles["widget-button"]} onClick={handleCopy}>Copy Link</button>
+                        <Button variant="primary" onClick={() => setOpenWalkInModal(true)}>
+                            New Order
+                        </Button>
+                        <Button variant="outline"onClick={handleDownloadQR}>Download QR</Button>
+                        <Button variant="outline"onClick={handleCopy}>Copy Link</Button>
                         {/* dropdown untuk edit dan delete shop */}
                         <Dropdown label="Manage Shop" items={manageItems} />
                     </div>
@@ -87,20 +98,22 @@ function UserShopPage() {
 
              {/* Tab */}
             <div>
-                <button
-                    onClick={() => setActiveTab("products")}
-                    style={{ fontWeight: activeTab === "products" ? "bold" : "normal" }}
-                >
-                    Products
-                </button>
-                <button
-                    onClick={() => setActiveTab("orders")}
-                    style={{ fontWeight: activeTab === "orders" ? "bold" : "normal" }}
-                >
-                    Orders
-                </button>
+                <Tab
+                    tabs={SHOP_TABS}
+                    activeTab={activeTab}
+                    onChange={setActiveTab}
+                />
             </div>
-            
+
+            {/*open create walk in order modal*/}
+            {openWalkInModal && (
+                <WalkInOrderModal
+                    shop_id={Number(id)}
+                    onClose={() => setOpenWalkInModal(false)}
+                    onSuccess={() => navigate(0)}  // refresh halaman
+                />
+            )}
+                    
              {/* Konten Tab */}
             {activeTab === "products" && (
                 <div className={styles["tab-content"]}>

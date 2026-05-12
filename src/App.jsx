@@ -7,7 +7,6 @@ import DashboardUser from "./pages/user_page/dashboard_user_page/Dashboard-User-
 import DashboardAdmin from './pages/admin_page/Dashboard-Admin-Page';
 import Unauthorized from './pages/Unauthorized-Page';
 import UserShopPage from "./pages/user_page/user_shop_page/User-Shop-Page";
-import CreateShopPage from './pages/user_page/Create-Shop-Page';
 import CreateProductPage from './pages/user_page/Create-Product-Page';
 import UserProductPage from "./pages/user_page/user_product_page/User-Product-Page";
 import PublicShopPage from './pages/public_page/Public-Shop-Page'
@@ -29,7 +28,6 @@ function App() {
         {/* user */}
         <Route path="/dashboard-user" element={<DashboardUser/>} />
         <Route path="/dashboard-user/shop/:id" element={<UserShopPage/>} />
-        <Route path="/dashboard-user/shop/create-shop" element={<CreateShopPage/>} />
         <Route path="/dashboard-user/shop/:shop_id/create-product" element={<CreateProductPage />} />
         <Route path="/dashboard-user/shop/:shop_id/product/:id" element={<UserProductPage />} />
         {/* admin */}

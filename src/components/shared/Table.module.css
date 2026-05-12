@@ -17,6 +17,10 @@
 
 .table-text-link {
     font-size: var(--font-size-p);
-    color: var(--color-secondary);
+    color: var(--color-blue);
     font-weight: var(--font-weight-semibold);
+}
+
+.table-text-link:hover{
+    text-decoration: underline;
 }

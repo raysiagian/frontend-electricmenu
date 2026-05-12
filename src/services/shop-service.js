@@ -29,6 +29,17 @@ export const searchShopUser = async ({search = "", page = 1, limit = 10, sort = 
     return res.data
 }
 
+export const deleteShopUser = async ({confirm_shop_name, id}) => {
+    const res = await api.delete(`/shop/delete-shop/${id}`,
+        {
+            data: {
+                confirm_shop_name
+            }
+        }
+    );
+    return res.data
+}
+
 export const getPublicShop = async (shop_slug) => {
     const res = await publicApi.get(`/public/shop/${shop_slug}`);
     return res.data

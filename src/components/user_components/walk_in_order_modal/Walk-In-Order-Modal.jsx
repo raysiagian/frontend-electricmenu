@@ -113,17 +113,17 @@ function WalkInOrderModal({ shop_id, onClose, onSuccess }) {
 
     return (
         <PopUpModal
-            title={step === 1 ? "Pilih Produk" : "Detail Pembeli"}
+            title={step === 1 ? "Choose Product" : "Buyer Detail"}
             onClose={onClose}
         >
             {/* ===== STEP INDICATOR ===== */}
             <div className={styles.stepIndicator}>
                 <span className={`${styles.step} ${step === 1 ? styles.activeStep : styles.doneStep}`}>
-                    1. Pilih Produk
+                    1. Choose Product
                 </span>
                 <span className={styles.stepDivider}>→</span>
                 <span className={`${styles.step} ${step === 2 ? styles.activeStep : ""}`}>
-                    2. Detail Pembeli
+                    2. Buyer Detail
                 </span>
             </div>
 
@@ -133,23 +133,23 @@ function WalkInOrderModal({ shop_id, onClose, onSuccess }) {
                     <SearchBarComponent
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Cari produk..."
+                        placeholder="Search product"
                     />
 
                     {loading && <p className={styles.info}>Loading...</p>}
                     {error && <p className={styles.errorText}>{error}</p>}
 
                     {!loading && products.length === 0 && (
-                        <p className={styles.info}>Tidak ada produk</p>
+                        <p className={styles.info}>No product avaiable</p>
                     )}
 
                     {!loading && products.length > 0 && (
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th className={styles.th}>Produk</th>
-                                    <th className={styles.th}>Harga</th>
-                                    <th className={styles.th}>Stok</th>
+                                    <th className={styles.th}>Product</th>
+                                    <th className={styles.th}>Price</th>
+                                    <th className={styles.th}>Stock</th>
                                     <th className={styles.th}>Qty</th>
                                 </tr>
                             </thead>
@@ -174,7 +174,7 @@ function WalkInOrderModal({ shop_id, onClose, onSuccess }) {
                                                         onClick={() => addToCart(product)}
                                                         disabled={!product.is_available}
                                                     >
-                                                        + Add
+                                                        Add
                                                     </button>
                                                 ) : (
                                                     <div className={styles.qtyControl}>
@@ -214,7 +214,7 @@ function WalkInOrderModal({ shop_id, onClose, onSuccess }) {
                                 variant="primary"
                                 onClick={() => setStep(2)}
                             >
-                                Lanjut →
+                                Continue →
                             </Button>
                         </div>
                     )}
@@ -231,7 +231,7 @@ function WalkInOrderModal({ shop_id, onClose, onSuccess }) {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th className={styles.th}>Produk</th>
+                                    <th className={styles.th}>Product</th>
                                     <th className={styles.th}>Qty</th>
                                     <th className={styles.th}>Subtotal</th>
                                 </tr>

@@ -43,7 +43,11 @@ export const deleteProduct = async (id, confirm_product_name) => {
 }
 
 export const editProduct = async (id, formData) => {
-    const res = await api.put(`/product/${id}/edit-product`)
+    const res = await api.patch(
+        `/product/${id}/edit-product`,
+        formData
+    )
+    return res.data
 }
 
 

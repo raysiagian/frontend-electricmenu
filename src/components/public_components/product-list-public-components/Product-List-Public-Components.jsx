@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { getProductByShopPublic, searchProductsinShopPublic } from "../../services/product-service";
-import ProductCardPublicComponent from "./Product-Card-Public-Components";
+import { getProductByShopPublic, searchProductsinShopPublic } from "../../../services/product-service";
+import ProductCardPublicComponent from "../product-card-public-components/Product-Card-Public-Components";
+import styles from "./ProductListPublicComponent.module.css"
+import paginationStyle from "../../shared/pagination/Pagination.module.css"
 
 function ProductListPublicComponent({shop_slug, cart, onAdd, onIncrease, onDecrease, search}) {
 
@@ -14,25 +16,6 @@ function ProductListPublicComponent({shop_slug, cart, onAdd, onIncrease, onDecre
     useEffect(() => {
         setPage(1);
     }, [search]);
-
-    // useEffect(() => {
-
-    //     if (!shop_slug) return
-
-    //     const fetchProduct = async () => {
-    //         try {
-    //             const data = await getProductByShopPublic(shop_slug)
-    //             setProduct(data.products)
-    //         } catch (err) {
-    //             if (err.response) {
-    //                 setError(err.response.data.error || "Gagal mengambil data");
-    //             } else {
-    //                 setError("Network Error");
-    //             }
-    //         }
-    //     }
-    //     fetchProduct()
-    // }, [shop_slug]);
 
     useEffect(() => {
         if (!shop_slug) return;
@@ -67,37 +50,41 @@ function ProductListPublicComponent({shop_slug, cart, onAdd, onIncrease, onDecre
     }, [shop_slug, search, page]);
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
-            {products.map((product) => {
-                const cartItem = cart.find((item) => item.id === product.id);
-                return (
-                    <ProductCardPublicComponent
-                        key={product.id}
-                        product={product}
-                        cartItem={cartItem} // ← null kalau belum di cart
-                        onAdd={onAdd}
-                        onIncrease={onIncrease}
-                        onDecrease={onDecrease}
-                    />
-                );
-            })}
+            <div className={styles.grid}>
+                {products.map((product) => {
+                    const cartItem = cart.find((item) => item.id === product.id);
+                    return (
+                        <ProductCardPublicComponent
+                            key={product.id}
+                            product={product}
+                            cartItem={cartItem} // ← null kalau belum di cart
+                            onAdd={onAdd}
+                            onIncrease={onIncrease}
+                            onDecrease={onDecrease}
+                        />
+                    );
+                })}
+            </div>
 
             {/* ← Pagination Controls */}
             {pagination && pagination.totalPages > 1 && (
-                <div>
+                <div className={paginationStyle.pagination}>
                     <button
+                        className={paginationStyle["page-btn"]}
                         onClick={() => setPage((p) => p - 1)}
                         disabled={page === 1 || loading}
                     >
                         Prev
                     </button>
 
-                    <span>Page {page} of {pagination.totalPages}</span>
-
+                    <span className={paginationStyle["page-info"]}>{page}</span>
+                    
                     <button
+                        className={paginationStyle["page-btn"]}
                         onClick={() => setPage((p) => p + 1)}
                         disabled={page >= pagination.totalPages || loading}
                     >

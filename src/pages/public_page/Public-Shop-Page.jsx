@@ -1,15 +1,30 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPublicShop } from "../../services/shop-service";
-import ProductListPublicComponent from "../../components/public_components/Product-List-Public-Components";
-import OrderModalComponent from "../../components/public_components/Order-Modal-Component";
+import ProductListPublicComponent from "../../components/public_components/product-list-public-components/Product-List-Public-Components";
+import OrderModalComponent from "../../components/public_components/order-modal-component/Order-Modal-Component";
 import SearchBarComponent from "../../components/shared/searchbar/Search-Bar-Component";
+import styles from './PublicShopPage.module.css';
 
 function PublicShopPage() {
     const { shop_slug } = useParams();
     const [shop, setShop] = useState(null);
-    const [cart, setCart] = useState([]);
+    // const [cart, setCart] = useState([]);
+
+    const [cart, setCart] = useState(() => {
+        const savedCart = localStorage.getItem(`cart-${shop_slug}`);
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
     const [search, setSearch] = useState("");
+    
+    useEffect(() => {
+        localStorage.setItem(
+            `cart-${shop_slug}`,
+            JSON.stringify(cart)
+        );
+    }, [cart, shop_slug]);
+
 
     useEffect(() => {
         console.log(`${shop_slug}`)
@@ -61,33 +76,37 @@ function PublicShopPage() {
     if (!shop) return <p>Loading...</p>;
 
     return (
-        <div>
-            <h1>{shop.shop_name}</h1>
-
-            <div>
-                <SearchBarComponent
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Cari produk..."
-                />
+        <div className={styles.page}>
+            <div className={styles.header}>
+                <h1 className={styles["shop-name"]}>{shop.shop_name}</h1>
             </div>
 
-            <div>
-                <ProductListPublicComponent 
-                    shop_slug={shop_slug}
-                    cart={cart}
-                    onAdd={addToCart}
-                    onIncrease={increaseQty}
-                    onDecrease={decreaseQty}
-                    search={search}
-                />
+            <div className={styles["content-wrapper"]}>
+                <div>
+                    <SearchBarComponent
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search product"
+                    />
+                </div>
+
+                <div>
+                    <ProductListPublicComponent 
+                        shop_slug={shop_slug}
+                        cart={cart}
+                        onAdd={addToCart}
+                        onIncrease={increaseQty}
+                        onDecrease={decreaseQty}
+                        search={search}
+                    />
+                </div>
+                {cart.length > 0 && (
+                    <OrderModalComponent
+                        cart={cart}
+                        shop_slug={shop_slug}
+                    />
+                )}
             </div>
-            {cart.length > 0 && (
-                <OrderModalComponent
-                    cart={cart}
-                    shop_slug={shop_slug}
-                />
-            )}
         </div>
     );
 }

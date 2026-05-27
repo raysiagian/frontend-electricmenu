@@ -30,6 +30,8 @@
     --color-gray-300: #d1d1d1;
     --color-gray-500: #888888;
     --color-gray-700: #444444;
+    --color-danger: #dc2626;
+    --color-danger-dark: #b91c1c;
 
     /* Font */
     --font-family-base: 'Poppins', sans-serif;

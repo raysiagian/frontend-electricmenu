@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { login } from "../services/auth-service";
 import { Button } from "../components/shared/button/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "../components/shared/AuthForm.module.css"
+import styles from "../components/shared/Form.module.css"
 import backgroundImage from '../assets/images/background_image.png'
 
 function Login() {
@@ -34,7 +34,7 @@ function Login() {
     try {
         const data = await login({ email, password });
 
-        localStorage.setItem("token", data.token);
+        // localStorage.setItem("token", data.token);
 
         // handle role
         const role = data.user.role_id
@@ -142,7 +142,7 @@ function Login() {
                                 {loading ? "Loading..." : "Sign In"}
                                 </Button>
                                 <p className={styles.divider}>Didnt have an account?</p>
-                                <Button variant="outline" full onClick={() => navigate("/register-user")}>
+                                <Button type="button" variant="outline" full onClick={() => navigate("/register-user")}>
                                 Sign Up
                                 </Button>
                             </div>

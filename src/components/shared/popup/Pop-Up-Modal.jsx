@@ -8,7 +8,7 @@ function PopUpModal({ title, onClose, children }) {
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
                     <h3 className={styles.title}>{title}</h3>
-                    <button className={styles.closeBtn} onClick={onClose}>✕</button>
+                    {/* <button className={styles.closeBtn} onClick={onClose}>✕</button> */}
                 </div>
                 <div className={styles.body}>
                     {children}

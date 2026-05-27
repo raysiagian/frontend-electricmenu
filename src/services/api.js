@@ -60,8 +60,12 @@ api.interceptors.response.use(
         console.log("ERROR STATUS:", error.response?.status);
 
         if (
-            (error.response?.status === 401 || error.response?.status === 403) &&
-            !originalRequest._retry
+            // (error.response?.status === 401 || error.response?.status === 403) &&
+            // !originalRequest._retry
+            (error.response?.status === 401 ||
+            error.response?.status === 403) &&
+            !originalRequest._retry &&
+            !originalRequest?.url?.includes("/auth/refresh-token")
         ) {
             originalRequest._retry = true;
 
@@ -86,7 +90,7 @@ api.interceptors.response.use(
 
             } catch (err) {
                 console.log("REFRESH FAILED");
-
+                console.log("REFRESH ERROR:", err.response?.data || err.message);
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
 

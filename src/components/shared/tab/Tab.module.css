@@ -1,4 +1,5 @@
 .wrapper {
+    padding: var(--spacing-lg);
     display: flex;
     border-bottom: var(--border-width-thin) solid var(--border-color-gray);
 }

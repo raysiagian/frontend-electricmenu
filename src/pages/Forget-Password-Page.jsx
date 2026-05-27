@@ -2,7 +2,7 @@ import { useState } from "react";
 import {  useNavigate, useLocation } from "react-router-dom";
 import { resetPasswordOTP } from "../services/auth-service";
 import { Button } from "../components/shared/button/Button";
-import styles from "../components/shared/AuthForm.module.css"
+import styles from "../components/shared/Form.module.css"
 import backgroundImage from '../assets/images/background_image.png'
 
 function ForgetPasswordPage () {

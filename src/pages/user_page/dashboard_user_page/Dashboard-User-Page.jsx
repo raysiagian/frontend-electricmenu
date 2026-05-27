@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import ShopListComponent from "../../../components/user_components/Shop-List-Component";
-import { createShop, deleteShopUser } from "../../../services/shop-service";
-import { useNavigate } from "react-router-dom";
-import { getProfile } from "../../../services/auth-service";
+import { createShop} from "../../../services/shop-service";
+import { useNavigate, useLocation  } from "react-router-dom";
 import { Button } from "../../../components/shared/button/Button";
 import SearchBarComponent from "../../../components/shared/searchbar/Search-Bar-Component";
 import DashboardOrderCardList from "../../../components/user_components/dashboard_order_card_list/Dashboard-Order-Card-List-Component";
 import styles from './DashboardUserPage.module.css';
 import PopUpModal from "../../../components/shared/popup/Pop-Up-Modal";
-import formStyle from "../../../components/shared/AuthForm.module.css"
+import formStyle from "../../../components/shared/Form.module.css"
+import Dropdown from "../../../components/shared/dropdown/Dropdown";
+import { editName, getProfile } from "../../../services/user-service";
+import { logout } from "../../../services/auth-service";
+import ChangePasswordFormModal from "../../../components/user_components/change_passowrd_modal/Change-Password-Form-Modal";
 
 function DashboardUser(){
+    
+
     const [user, setUser] = useState(null)
     const [search, setSearch] = useState("");
 
@@ -19,21 +24,68 @@ function DashboardUser(){
 
     // delete shop open model
     const [selectedShop, setSelectedShop] = useState(null);
-    const [openDeleteShopModal, setOpenDeleteShopModal] = useState(false);
 
     const [shopName, setShopName] = useState("")
-    const [confirmShopName, setConfirmShopName] = useState("")
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const [name, setName]= useState("")
+    const [openEditProfileModal, setOpenEditProfileModal]= useState(false)
+
+    // change password
+    const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const [successMessage, setSuccessMessage] = useState("");
+
+
+    const profileSettings = [
+        {
+            label: "Edit Profile",
+            onClick: () => handleOpenEditProfileModal()
+        },
+        {
+            label: "Change Password",
+            onClick: () => setOpenChangePasswordModal(true)
+        },
+        {
+            label: "Logout",
+            danger: true,
+            onClick: () => handleLogout( )
+        },
+    ];
+
+    // message success delete shop 
+    // first time alert message
+    useEffect(() => {
+        if (location.state?.successMessage) {
+            setSuccessMessage(location.state.successMessage);
+
+            // bersihkan state dari URL
+            navigate(location.pathname, { replace: true, state: {} });
+        }
+    }, []);
+
+    // alert message timer
+    useEffect(() => {
+        if (!successMessage) return;
+
+        const timer = setTimeout(() => {
+            setSuccessMessage("");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, [successMessage]);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
+                
                 const data = await getProfile();
                 setUser(data.user);
+                console.log("RESPONSE:", data);
             } catch (err) {
                 console.error(err);
             }
@@ -75,60 +127,88 @@ function DashboardUser(){
         }
     }
 
-    const handleOpenDeleteShopModal = () => {
-        setConfirmShopName("")
-        setError("");
-        setOpenDeleteShopModal(true)
+    const handleOpenEditProfileModal = () => {
+        setName("")
+        setError("")
+        setOpenEditProfileModal(true)
     }
 
-    const handleCloseDeleteShopModal = () => {
-        setOpenDeleteShopModal(false)
+    const handleCloseEditProfileModal = () => {
+        setOpenEditProfileModal(false)
     }
 
-    const handleDeleteShop = async (e) => {
+    const handleSubmitEditProfile = async (e) => {
         e.preventDefault();
 
-        if(!confirmShopName.trim()){
-            setError("Shop name cannot be empty")
+        if(!name.trim()){
+            setError("Name cannot be empty")
             return;
         }
 
-        if (!selectedShop) {
-            setError("No shop selected");
-            return;
-        }
-
-        if(
-            confirmShopName.trim().toLowerCase() !== selectedShop.shop_name.trim().toLowerCase()
-        ) {
-            setError("Name doesnt match");
-            return;
-        }
-
-        setLoading(true);
-        setError("");
+        setLoading(true)
 
         try {
-            await deleteShopUser({
-                id: selectedShop.id,
-                confirm_shop_name: confirmShopName
-            });
-            handleCloseDeleteShopModal();
+            const data = await editName({
+                name: name
+            })
+
+            console.log("RESPONSE:", data);
+
+            setUser((prev) => ({
+                ...prev,
+                ...data.user
+            }));
+
+            handleCloseEditProfileModal()
+
         } catch (err) {
-            setError(err.response?.data?.error || "Failed to delete shop");
+            console.error(err);
+
+            if (err.response?.status === 429) {
+                setError("You can  only change your name once a week.");
+            } else {
+                setError(
+                    err.response?.data?.error ||
+                    err.response?.data?.message ||
+                    "Something went wrong"
+                );
+            }
         }finally{
             setLoading(false);
         }
     }
 
+    const handleLogout = async () => {
+        setError("");
+
+        try {
+            await logout();
+        } catch (err) {
+            console.error(err);
+
+            setError(
+                err.response?.data?.error ||
+                err.response?.data?.message ||
+                "Failed to logout"
+            );
+        }
+    };
+
 
     return (
         <div className={styles.page}>
 
+            {/* Success alert when delete shop*/}
+            {successMessage && (
+                <p className={styles.successText}>
+                    {successMessage}
+                </p>
+            )}
+
             {/* HEADER */}
             <div className={styles.header}>
                 <div>
-                    <h1 className="heading-lg">
+                    <h1 className={styles["header-text"]}>
                         Hi, {user?.name || "Guest"}
                     </h1>
                     <p className="body-md">
@@ -136,16 +216,7 @@ function DashboardUser(){
                     </p>
                 </div>
 
-                {/* <Button
-                    variant="primary"
-                    onClick={() => navigate("/dashboard-user/shop/create-shop")}
-                >
-                    Create Shop
-                </Button> */}
-
-                <Button variant="primary" onClick={handleOpenModal}>
-                    Create Shop
-                </Button>
+                <Dropdown label="Settings" items={profileSettings}/>
             </div>
 
             {/* CONTENT */}
@@ -153,7 +224,12 @@ function DashboardUser(){
 
                 {/* LEFT */}
                 <div className={styles["left-container"]}>
-                    <h3 className="heading-md">Your Shop List</h3>
+                    <div className={styles["left-container-header"]}>
+                        <h3 className="heading-md">Your Shop List</h3>
+                        <Button variant="primary" onClick={handleOpenModal}>
+                            Create Shop
+                        </Button>
+                    </div>
 
                     <SearchBarComponent
                         value={search}
@@ -193,7 +269,7 @@ function DashboardUser(){
                             <Button variant="primary" type="submit" disabled={loading}>
                                 {loading ? "Loading..." : "Create Shop"}
                             </Button>
-                            <Button variant="outline" onClick={handleCloseModal}>
+                            <Button variant="ghost" onClick={handleCloseModal}>
                                 Cancel
                             </Button>
                         </div>
@@ -201,6 +277,37 @@ function DashboardUser(){
                 </PopUpModal>
             )}
 
+            {/* edit profile modal */}
+            {openEditProfileModal && (
+                <PopUpModal title="Edit Profile" onClose={handleCloseEditProfileModal}>
+                    <form className={formStyle.form} onSubmit={handleSubmitEditProfile}>
+                        <div className={formStyle.field}>
+                            <label className={formStyle.label}>Name</label>
+                            <input
+                                className={formStyle.input}
+                                type="text"
+                                placeholder="Your new name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        {error && <p className={formStyle["error-text"]}>{error}</p>}
+                        <div className={formStyle.actions}>
+                            <Button variant="primary" type="submit" disabled={loading}>
+                                {loading ?  "Loading..." : "Edit Name"}
+                            </Button>
+                            <Button variant="ghost" onClick={handleCloseEditProfileModal}>
+                                Cancel
+                            </Button>
+                        </div>
+                    </form>
+                </PopUpModal>
+            )}
+
+            {/* change password */}
+            {openChangePasswordModal && (
+                <ChangePasswordFormModal onClose={() => setOpenChangePasswordModal(false)} />
+            )}
 
         </div>
     );

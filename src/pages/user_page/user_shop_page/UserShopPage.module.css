@@ -1,68 +1,102 @@
+/* UserShopPage.module.css */
+
 .page {
     min-height: 100vh;
     padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
+    background: var(--color-gray-100);
 }
 
-.content-wrapper{
-
-}
-
-.header{
+/* ===========================
+   HEADER
+=========================== */
+.header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: var(--spacing-lg);
+    background: var(--color-white);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
 }
 
-.shop-name{
-    font-size: var(--font-size-h1);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-black);
+.qr-image {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-md);
+    border: var(--border-width-thin) solid var(--border-color-gray);
+    object-fit: cover;
+    flex-shrink: 0;
 }
 
-.qr-image{
-    width: 150px;
-    height: 150px;
-}
-
-.shop-widget{
+.header-info {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    flex: 1;
+    min-width: 0; /* prevent overflow */
+}
+
+.shop-name {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-700);
+    word-break: break-word;
+}
+
+.shop-widget {
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-sm);
 }
 
-.widget-button{
+/* bungkus tiap Button/Dropdown dengan ini */
+.widget-btn {
+    flex-shrink: 0;
+}
+
+.widget-btn button {
     display: flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-gray-700);
+    gap: 8px;
+}
+
+.manage-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ===========================
+   TAB CONTENT
+=========================== */
+.tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
     background: var(--color-white);
-    border: var(--border-width-thin) solid var(--border-color-gray);
-    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
 }
 
-.tab-wrapper{
-    
-}
-
-.tab-title{
+.tab-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: var(--spacing-md);
 }
 
-.tab-content{
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
+.tab-title-btn {
+    flex-shrink: 0;
 }
 
+/* ===========================
+   SELECT FILTER
+=========================== */
 .select {
     padding: var(--spacing-xs) var(--spacing-md);
     font-size: var(--font-size-sm);
@@ -78,4 +112,104 @@
 .select:focus {
     border-color: var(--color-primary);
     outline: none;
+}
+
+@media (max-width: 800px) {
+
+    .btn-text {
+        display: none;
+    }
+
+    .widget-btn button {
+        padding-inline: 12px;
+    }
+
+     .shop-widget {
+        gap: 6px;
+    }
+
+}
+
+/* ===========================
+   RESPONSIVE — 768px
+=========================== */
+@media (max-width: 768px) {
+    .page {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .qr-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .shop-name {
+        font-size: var(--font-size-h4);
+    }
+
+    .shop-widget {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* tetap compact */
+    .widget-btn {
+        flex: 0 0 auto;
+        min-width: unset;
+        width: auto;
+    }
+
+    .widget-btn button {
+        padding-inline: 12px;
+    }
+
+    .tab-content {
+        padding: var(--spacing-md);
+    }
+
+    .tab-title {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tab-title-btn {
+        width: 100%;
+    }
+}
+
+/* ===========================
+   RESPONSIVE — 480px
+=========================== */
+@media (max-width: 480px) {
+    .page {
+        padding: var(--spacing-sm);
+    }
+
+    .header {
+        padding: var(--spacing-sm);
+    }
+
+    .shop-widget {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .widget-btn {
+        flex: 0 0 auto;
+        width: auto;
+    }
+
+    .widget-btn button {
+        padding-inline: 10px;
+    }
 }

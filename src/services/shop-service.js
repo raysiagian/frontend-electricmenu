@@ -40,6 +40,13 @@ export const deleteShopUser = async ({confirm_shop_name, id}) => {
     return res.data
 }
 
+export const editShopUser = async ({id, shop_name}) => {
+    const res = await api.patch(`/shop/edit-shops/${id}`,{
+        shop_name
+    })
+    return res.data
+}
+
 export const getPublicShop = async (shop_slug) => {
     const res = await publicApi.get(`/public/shop/${shop_slug}`);
     return res.data

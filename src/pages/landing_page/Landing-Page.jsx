@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/shared/button/Button";
-import { Accordion } from "../components/shared/accordion/Accordion";
+import { Button } from "../../components/shared/button/Button";
+import { Accordion } from "../../components/shared/accordion/Accordion";
 import style from './Landing-Page.module.css';
-import heroImage from '../assets/images/hero_image.png'
+import heroImage from '../../assets/images/hero_image.png'
 
 function LandingPage(){
 
@@ -15,6 +15,10 @@ function LandingPage(){
             question: 'How it works?',
             answer: 'Sign up. Create your store. Share your QR code. Let customers explore your products and services instantly, while you stay in control from a single dashboard.',
         },
+        {
+            question: 'What if customers do not order through the website?',
+            answer: 'No problem. You can manually create orders directly from your dashboard, just like a regular cashier or administration system.'
+        }
     ];
 
     const navigate = useNavigate();
@@ -35,10 +39,10 @@ function LandingPage(){
                     </p>
 
                     <div className={style["hero-button"]}>
-                        <Button variant="primary" onClick={() => navigate("/register-user")}>
+                        <Button type="button" variant="primary" onClick={() => navigate("/register-user")}>
                             Get Started
                         </Button>
-                        <Button variant="outline" onClick={() => navigate("/login")}>
+                        <Button type="button" variant="outline" onClick={() => navigate("/login")}>
                             Sign In
                         </Button>
                     </div>

@@ -4,6 +4,9 @@ import { getProductByID, getProductByShopIDAndProductID, getProductStatsByID, ed
 import ToggleSwitchComponent from "../../../components/shared/Toggle-Switch-Component";
 import { searchTypes } from "../../../services/type-service";
 import PopUpModal from "../../../components/shared/popup/Pop-Up-Modal";
+import formStyle from "../../../components/shared/Form.module.css"
+import styles from "./UserProductPage.module.css"
+import { Button } from "../../../components/shared/button/Button";
 
 function UserProductPage (){
 
@@ -14,13 +17,15 @@ function UserProductPage (){
     const [stats, setProductStat] = useState(null)
     // edit
     const [showEditModal, setShowEditModal] = useState(false);
-    const [editLoading, setEditLoading] = useState(false);
-    const [editError, setEditError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const [preview, setPreview] = useState(null);
     const [typeSearch, setTypeSearch] = useState("");
     const [typeResults, setTypeResults] = useState([]);
     const [selectedType, setSelectedType] = useState(null);
     const debounceRef = useRef(null);
+
+    const isSelectingRef = useRef(false);
 
     const [form, setForm] = useState({
         product_name: "",
@@ -47,6 +52,13 @@ function UserProductPage (){
         setShowEditModal(true);
     };
 
+    const handleSelectType = (type) => {
+        isSelectingRef.current = true;
+        setSelectedType(type);
+        setTypeSearch(type.type_name);
+        setTypeResults([]);
+    };
+
      // Search type dengan debounce
     useEffect(() => {
         if (!typeSearch) {
@@ -54,24 +66,24 @@ function UserProductPage (){
             return;
         }
 
+        if (isSelectingRef.current) {
+            isSelectingRef.current = false;
+            return;
+        }
+
+
         clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(async () => {
             try {
                 const data = await searchTypes(typeSearch);
                 setTypeResults(data);
             } catch (err) {
-                console.error("Gagal search type:", err);
+                console.error("Faled to search type:", err);
             }
         }, 300);
 
         return () => clearTimeout(debounceRef.current);
     }, [typeSearch]);
-
-    const handleSelectType = (type) => {
-        setSelectedType(type);
-        setTypeSearch(type.type_name);
-        setTypeResults([]); // tutup dropdown
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -94,8 +106,8 @@ function UserProductPage (){
 
     const handleEdit = async (e) => {
         e.preventDefault();
-        setEditError("");
-        setEditLoading(true);
+        setError("");
+        setLoading(true);
 
         try {
             const formData = new FormData();
@@ -111,26 +123,35 @@ function UserProductPage (){
             setShowEditModal(false);
 
         } catch (err) {
-            setEditError(err.response?.data?.error || "Gagal mengupdate produk");
+            setError(err.response?.data?.error || "Gagal mengupdate produk");
         } finally {
-            setEditLoading(false);
+            setLoading(false);
         }
     };
 
     // delete
-    const [showModal, setShowModal] = useState(false);
+    const [openDeleteProductModal, setOpenDeleteProductModal] = useState(false);
     const [confirmName, setConfirmName] = useState("");
-    const [loadingDelete, setLoadingDelete] = useState(false);
-    const [errorDelete, setErrorDelete] = useState("");
 
-    const handleDelete = async () => {
+    const handleOpenDeleteProductModal = () => {
+        setConfirmName("")
+        setError("")
+        setOpenDeleteProductModal(true)
+    }
+
+    const handleCloseDeleteProductModal = () => {
+        setOpenDeleteProductModal(false)
+    }
+
+    const handleDelete = async (e) => {
+        e.preventDefault();
         if (!confirmName) {
-            setErrorDelete("Nama produk wajib diisi");
+            setError("Nama produk wajib diisi");
             return;
         }
 
-        setLoadingDelete(true);
-        setErrorDelete("");
+        setLoading(true);
+        setError("");
 
         try {
             const res = await deleteProduct(id, confirmName);
@@ -140,11 +161,11 @@ function UserProductPage (){
             // redirect setelah delete
             navigate(`/dashboard-user/shop/${shop_id}`);
         } catch (err) {
-            setErrorDelete(
+            setError(
                 err.response?.data?.error || "Gagal menghapus produk"
             );
         } finally {
-            setLoadingDelete(false);
+            setLoading(false);
         }
     };
 
@@ -192,86 +213,135 @@ function UserProductPage (){
         fetchProductStats();
     }, [id])
 
+    
+
     return(
-        <div>
-            <div>
-                <div>
-                    <img src={product?.product_image_url} alt="Product Image" />
-                    <p>{product?.product_name}</p>
-                    <p>Harga : Rp.{product?.price}</p>
-                    <p>Stok : {product?.stock}</p>
-                    <p>Tipe layanan : {product?.service_type}</p>            
-                    <div>
-                        <p>Keteresediaan Produk :</p>
+        <div className={styles.page}>
+            <div className={styles["product-card"]}>
+                {product?.product_image_url ? (
+                    <img
+                        className={styles["product-image"]}
+                        src={product.product_image_url}
+                        alt="Product Image"
+                    />
+                ) : (
+                    <div className={styles["product-image-placeholder"]}>
+                        No Image
+                    </div>
+                )}
+                <div className={styles["product-info"]}>
+                    <h1 className={styles["product-name"]}>{product?.product_name}</h1>
+                    {/* <p>Price : Rp.{product?.price}</p>
+                    <p>Stock : {product?.stock}</p>
+                    <p>Service Type : {product?.service_type}</p>             */}
+                    <div className={styles["product-meta"]}>
+                        <p className={styles["meta-item"]}>
+                            Price: <span className={styles["meta-value"]}>
+                                Rp{Number(product?.price).toLocaleString("id-ID")}
+                            </span>
+                        </p>
+                        <p className={styles["meta-item"]}>
+                            Stock: <span className={styles["meta-value"]}>
+                                {product?.service_type === "service" ? "∞" : product?.stock}
+                            </span>
+                        </p>
+                        <p className={styles["meta-item"]}>
+                            Service Type: <span className={styles["meta-value"]}>
+                                {product?.service_type}
+                            </span>
+                        </p>
+                        {product?.type_name && (
+                            <p className={styles["meta-item"]}>
+                                Type: <span className={styles["meta-value"]}>{product.type_name}</span>
+                            </p>
+                        )}
+                    </div>
+                    <div className={styles["availability-row"]}>
+                        <span className={styles["availability-label"]}>Availability</span>
                         <ToggleSwitchComponent
                             value={product?.is_available || false}
                             onChange={() => product && handleUpdateAvailability(product.id)}
                         />
                     </div>
+
+                    <div className={styles.actions}>
+                        <div className={styles["actions-btn"]}>
+                            <Button variant="primary" onClick={handleOpenEditModal}>
+                                Edit Product
+                            </Button>
+                        </div>
+                        <div className={styles["actions-btn"]}>
+                            <Button variant="danger" onClick={() => setOpenDeleteProductModal(true)}>
+                                Delete Product
+                            </Button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <p>Statistik Produk</p>
-                <p>Total Penjualan : {stats?.total_quantity}</p>
-                <p>Total Penjualan : {stats?.total_revenue}</p>
-            </div>
-            <div>
-                <button onClick= {() => setShowEditModal(true)}>
-                    Edit
-                </button>
-                <button onClick={() => setShowModal(true)}>
-                    Delete Product
-                </button>
+            {/* <div>
+                <p>Product Statistic</p>
+                <p>Total Sell : {stats?.total_quantity}</p>
+                <p>Total Revenue : Rp.{stats?.total_revenue}</p>
+            </div> */}
+            <div className={styles["stats-card"]}>
+                <h2 className={styles["stats-title"]}>Product Statistics</h2>
+                <div className={styles["stats-grid"]}>
+                    <div className={styles["stat-item"]}>
+                        <span className={styles["stat-label"]}>Total Sold</span>
+                        <span className={styles["stat-value"]}>
+                            {stats?.total_quantity ?? 0}
+                        </span>
+                    </div>
+                    <div className={styles["stat-item"]}>
+                        <span className={styles["stat-label"]}>Total Revenue</span>
+                        <span className={styles["stat-value"]}>
+                            Rp{Number(stats?.total_revenue ?? 0).toLocaleString("id-ID")}
+                        </span>
+                    </div>
+                </div>
             </div>
 
              {/* Modal Edit */}
             {showEditModal && (
                 <PopUpModal title = "Edit Produk" onClose ={() => setShowEditModal(false)}>
-                    {editError && <p style={{ color: "red" }}>{editError}</p>}
-                    <form onSubmit={handleEdit}>
-                        <div>
-                            <label>Nama Produk</label>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+                    <form className={formStyle.form} onSubmit={handleEdit}>
+                        <div className={formStyle.field}>
+                            <label className={formStyle.label}>Product Name (optional)</label>
                             <input
+                                className={formStyle.input}
                                 type="text"
                                 name="product_name"
                                 value={form.product_name}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 
                         {/* Type Search */}
-                        <div style={{ position: "relative" }}>
-                            <label>Type (opsional)</label>
+                        <div className={formStyle["field-relative"]}>
+                            <label className={formStyle.label}>Type (optional)</label>
                             <input
+                                className={formStyle.input}
                                 type="text"
-                                placeholder="Cari type produk..."
+                                placeholder="Search your product type..."
                                 value={typeSearch}
                                 onChange={(e) => {
                                     setTypeSearch(e.target.value);
                                     setSelectedType(null);
                                 }}
-                                onBlur={() => setTimeout(() => setTypeResults([]), 200)}
+                                onBlur={() => setTypeResults([])}
                             />
                             {typeResults.length > 0 && (
-                                <ul style={{
-                                    position: "absolute",
-                                    background: "white",
-                                    border: "1px solid #ccc",
-                                    listStyle: "none",
-                                    padding: 0,
-                                    margin: 0,
-                                    width: "100%",
-                                    zIndex: 10
-                                }}>
+                                <ul className={formStyle["dropdown-list"]}>
                                     {typeResults.map((type) => (
                                         <li
                                             key={type.id}
+                                            className={formStyle["dropdown-item"]}
                                             onPointerDown={(e) => {
                                                 e.preventDefault();
+                                                isSelectingRef.current = true;
                                                 handleSelectType(type);
                                             }}
-                                            style={{ padding: "8px", cursor: "pointer" }}
                                         >
                                             {type.type_name}
                                         </li>
@@ -280,30 +350,36 @@ function UserProductPage (){
                             )}
                         </div>
 
-                        <div>
-                            <label>Service Type</label>
-                            <select name="service_type" value={form.service_type} onChange={handleChange} required>
+                        <div className={formStyle.field}>
+                            <label className={formStyle.label}>Service Type (optional)</label>
+                            <select
+                                className={formStyle.select}
+                                name="service_type"
+                                value={form.service_type}
+                                onChange={handleChange}
+                            >
                                 <option value="">-- Select Service Type --</option>
                                 <option value="product">Product</option>
                                 <option value="service">Service</option>
                             </select>
                         </div>
 
-                        <div>
-                            <label>Harga</label>
+                        <div className={formStyle.field}>
+                            <label className={formStyle.label}>Price (optional)</label>
                             <input
+                                className={formStyle.input}
                                 type="number"
                                 name="price"
                                 value={form.price}
                                 onChange={handleChange}
-                                required
                             />
                         </div>
 
                         {form.service_type === "product" && (
-                            <div>
-                                <label>Stok</label>
+                            <div className={formStyle.field}>
+                                <label className={formStyle.label}> Stock (optional)</label>
                                 <input
+                                    className={formStyle.input}
                                     type="number"
                                     name="stock"
                                     value={form.stock}
@@ -312,48 +388,60 @@ function UserProductPage (){
                             </div>
                         )}
 
-                        <div>
-                            <label>Gambar Produk (opsional)</label>
+                        <div className={formStyle.field}>
+                            <label className={formStyle.label}>Product Image (optional)</label>
                             <input
+                                className={formStyle["file-input"]}
                                 type="file"
                                 accept="image/png, image/jpg, image/jpeg"
                                 onChange={handleFileChange}
                             />
                             {preview && (
-                                <img src={preview} alt="Preview" style={{ width: 150, marginTop: 8 }} />
+                                <img 
+                                src={preview} 
+                                alt="Preview" 
+                                className={formStyle["image-preview"]}
+                            />
                             )}
                         </div>
 
-                        <div>
-                            <button type="button" onClick={() => setShowEditModal(false)}>
-                                Batal
-                            </button>
-                            <button type="submit" disabled={editLoading}>
-                                {editLoading ? "Menyimpan..." : "Simpan"}
-                            </button>
+                        <div  className={formStyle.actions}>
+                            <Button type="submit" disabled={loading} full>
+                                {loading ? "Loading..." : "Edit Product"}
+                            </Button>
+                            <Button type="button" variant="outline" onClick={() => setShowEditModal(false)}>
+                                Cancel
+                            </Button>
                         </div>
                     </form>
                 </PopUpModal>
             )}
             
             {/* Modal delete */}
-            {showModal && (
-                <PopUpModal title = "Konfirmasi Hapus" onClose ={() => setShowModal(false)}>
-                    <p>Menghapus Produk {product?.product_name}</p>
-                    <p>Untuk mengkonfirmasi, ketik <b>{product?.product_name}</b></p>
-                    <input
-                        type="text"
-                        placeholder="Masukkan nama produk"
-                        value={confirmName}
-                        onChange={(e) => setConfirmName(e.target.value)}
-                    />
-                    {errorDelete && <p style={{ color: "red" }}>{errorDelete}</p>}
-                    <div style={{ marginTop: "10px" }}>
-                        <button onClick={() => setShowModal(false)}>Batal</button>
-                        <button onClick={handleDelete} disabled={loadingDelete}>
-                            {loadingDelete ? "Deleting..." : "Confirm Delete"}
-                        </button>
-                    </div>
+            {openDeleteProductModal && (
+                <PopUpModal title = "Confirm Deleting Product" onClose ={handleCloseDeleteProductModal}>
+                    {/* <p>Menghapus Produk {product?.product_name}</p> */}
+                    <p>To confirm this action, type <b>{product?.product_name}</b></p>
+                    <form className={formStyle.form} onSubmit={handleDelete}>
+                        <div  className={formStyle.field}>
+                            <input
+                                className={formStyle.input}
+                                type="text"
+                                placeholder="Type product name"
+                                value={confirmName}
+                                onChange={(e) => setConfirmName(e.target.value)}
+                            />
+                        </div>
+                        {error && <p className={formStyle["error-text"]}>{error}</p>}
+                        <div className={formStyle.actions}>
+                            <Button variant="outline" onClick={handleCloseDeleteProductModal}>
+                                Cancel
+                            </Button>
+                            <Button variant="danger" type="submit" disabled={loading}>
+                                {loading ?  "Loading..." : "Delete Product"}
+                            </Button>
+                        </div>
+                    </form>
                 </PopUpModal>
             )}
         </div>     

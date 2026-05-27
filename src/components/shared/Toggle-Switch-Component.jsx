@@ -29,7 +29,7 @@ function ToggleSwitchComponent({ value, onChange, disabled = false }) {
                     transition: "left 0.2s"
                 }} />
             </div>
-            <span>{value ? "Tersedia" : "Tidak Tersedia"}</span>
+            <span>{value ? "Avaliable" : "Not Available"}</span>
         </div>
     );
 }

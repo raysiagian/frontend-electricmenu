@@ -2,7 +2,7 @@ import { useState } from "react";
 import { registerUser } from "../../services/auth-service";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/shared/button/Button";
-import styles from "../../components/shared/AuthForm.module.css"
+import styles from "../../components/shared/Form.module.css"
 import backgroundImage from "../../assets/images/background_image.png"
 
 function RegisterUser() {
@@ -136,7 +136,7 @@ function RegisterUser() {
                             {loading ? "Loading..." : "Sign Up"}
                         </Button>
                         <p className={styles.divider}>Already have an account?</p>
-                        <Button variant="outline" onClick={() => navigate("/login")}> Sign In</Button>
+                        <Button type="button" variant="outline" onClick={() => navigate("/login")}> Sign In</Button>
                     </div>
                 </form>
                 </div>

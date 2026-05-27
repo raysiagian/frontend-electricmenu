@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { createProduct } from "../../services/product-service";
-import { searchTypes } from "../../services/type-service";
+import { createProduct } from "../../../services/product-service";
+import { searchTypes } from "../../../services/type-service";
+import formStyle from "../../../components/shared/Form.module.css"
+import { Button } from "../../../components/shared/button/Button";
 
 function CreateProductPage() {
     const { shop_id: paramShopId } = useParams();
@@ -17,6 +19,8 @@ function CreateProductPage() {
     const [selectedType, setSelectedType] = useState(null); // { id, type_name }
     const debounceRef = useRef(null);
 
+    const isSelectingRef = useRef(false);
+
     const [form, setForm] = useState({
         product_name: "",
         service_type: "",
@@ -25,6 +29,19 @@ function CreateProductPage() {
         product_image: null
     });
 
+     // const handleSelectType = (type) => {
+    //     setSelectedType(type);
+    //     setTypeSearch(type.type_name);
+    //     setTypeResults([]); // tutup dropdown
+    // };
+
+    const handleSelectType = (type) => {
+        isSelectingRef.current = true;
+        setSelectedType(type);
+        setTypeSearch(type.type_name);
+        setTypeResults([]);
+    };
+
     // Search type dengan debounce
     useEffect(() => {
         if (!typeSearch) {
@@ -32,24 +49,24 @@ function CreateProductPage() {
             return;
         }
 
+        if (isSelectingRef.current) {
+            isSelectingRef.current = false;
+            return;
+        }
+
+
         clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(async () => {
             try {
                 const data = await searchTypes(typeSearch);
                 setTypeResults(data);
             } catch (err) {
-                console.error("Gagal search type:", err);
+                console.error("Failed to search type:", err);
             }
         }, 300);
 
         return () => clearTimeout(debounceRef.current);
     }, [typeSearch]);
-
-    const handleSelectType = (type) => {
-        setSelectedType(type);
-        setTypeSearch(type.type_name);
-        setTypeResults([]); // tutup dropdown
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -95,17 +112,20 @@ function CreateProductPage() {
         }
     };
 
+
     return (
-        <div>
-            <h2>Create New Product</h2>
+    <div className={formStyle.page}>
+        <div className={formStyle.card}>
+            <h2 className={formStyle.title}>Create New Product</h2>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className={formStyle["error-text"]}>{error}</p>}
 
-            <form onSubmit={handleSubmit}>
+            <form className={formStyle.form} onSubmit={handleSubmit}>
 
-                <div>
-                    <label>Product Name</label>
+                <div className={formStyle.field}>
+                    <label className={formStyle.label}>Product Name</label>
                     <input
+                        className={formStyle.input}
                         type="text"
                         name="product_name"
                         value={form.product_name}
@@ -115,63 +135,63 @@ function CreateProductPage() {
                 </div>
 
                 {/* Type Search */}
-                <div style={{ position: "relative" }}>
-                    <label>Type (opsional)</label>
+                <div className={formStyle["field-relative"]}>
+                    <label className={formStyle.label}>Type (optional)</label>
                     <input
+                        className={formStyle.input}
                         type="text"
-                        placeholder="Cari type produk..."
+                        placeholder="Search your product type..."
                         value={typeSearch}
                         onChange={(e) => {
                             setTypeSearch(e.target.value);
-                            setSelectedType(null); // reset pilihan kalau user ketik ulang
+                            setSelectedType(null);
                         }}
-                        onBlur={() => setTimeout(() => setTypeResults([]), 200)}
+                        onBlur={() => setTypeResults([])}
+                        // onBlur={() => {
+                        //     // hanya tutup kalau user tidak sedang memilih item
+                        //     if (!isSelectingRef.current) {
+                        //         setTimeout(() => setTypeResults([]), 200);
+                        //     }
+                        // }}
                     />
-                    {/* Dropdown hasil search */}
                     {typeResults.length > 0 && (
-                        <ul style={{
-                            position: "absolute",
-                            background: "white",
-                            border: "1px solid #ccc",
-                            listStyle: "none",
-                            padding: 0,
-                            margin: 0,
-                            width: "100%",
-                            zIndex: 10
-                        }}>
+                        <ul className={formStyle["dropdown-list"]}>
                             {typeResults.map((type) => (
                                 <li
                                     key={type.id}
+                                    className={formStyle["dropdown-item"]}
                                     onPointerDown={(e) => {
                                         e.preventDefault();
+                                        isSelectingRef.current = true;
                                         handleSelectType(type);
                                     }}
-                                    style={{ padding: "12px", cursor: "pointer" }}
                                 >
                                     {type.type_name}
                                 </li>
                             ))}
                         </ul>
                     )}
-                    {/* {selectedType && (
-                        <p style={{ fontSize: 12, color: "green" }}>
-                            Terpilih: {selectedType.type_name}
-                        </p>
-                    )} */}
                 </div>
 
-                <div>
-                    <label>Service Type</label>
-                    <select name="service_type" value={form.service_type} onChange={handleChange} required>
+                <div className={formStyle.field}>
+                    <label className={formStyle.label}>Service Type</label>
+                    <select
+                        className={formStyle.select}
+                        name="service_type"
+                        value={form.service_type}
+                        onChange={handleChange}
+                        required
+                    >
                         <option value="">-- Select Service Type --</option>
                         <option value="product">Product</option>
                         <option value="service">Service</option>
                     </select>
                 </div>
 
-                <div>
-                    <label>Price</label>
+                <div className={formStyle.field}>
+                    <label className={formStyle.label}>Price</label>
                     <input
+                        className={formStyle.input}
                         type="number"
                         name="price"
                         value={form.price}
@@ -180,11 +200,11 @@ function CreateProductPage() {
                     />
                 </div>
 
-                {/* tampilkan stock hanya kalau service_type = product */}
                 {form.service_type === "product" && (
-                    <div>
-                        <label>Stock</label>
+                    <div className={formStyle.field}>
+                        <label className={formStyle.label}>Stock</label>
                         <input
+                            className={formStyle.input}
                             type="number"
                             name="stock"
                             value={form.stock}
@@ -194,26 +214,37 @@ function CreateProductPage() {
                     </div>
                 )}
 
-                <div>
-                    <label>Product Image</label>
+                <div className={formStyle.field}>
+                    <label className={formStyle.label}>Product Image</label>
                     <input
+                        className={formStyle["file-input"]}
                         type="file"
                         accept="image/png, image/jpg, image/jpeg"
                         onChange={handleFileChange}
                         required
                     />
                     {preview && (
-                        <img src={preview} alt="Preview" style={{ width: 150, marginTop: 8 }} />
+                        <img
+                            className={formStyle["image-preview"]}
+                            src={preview}
+                            alt="Preview"
+                        />
                     )}
                 </div>
 
-                <button type="submit" disabled={loading}>
-                    {loading ? "Loading..." : "Create Product"}
-                </button>
+                <div className={formStyle.actions}>
+                    <Button variant="primary" type="submit" disabled={loading} full>
+                        {loading ? "Loading..." : "Create Product"}
+                    </Button>
+                    <Button variant="ghost" onClick={() => navigate(-1)} full>
+                        Cancel
+                    </Button>
+                </div>
 
             </form>
         </div>
-    );
+    </div>
+);
 }
 
 export default CreateProductPage;

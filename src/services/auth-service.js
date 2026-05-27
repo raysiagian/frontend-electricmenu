@@ -1,12 +1,22 @@
 import api from "./api";
 
-export const login = async (data) => {
-    const res = await api.post("/auth/login", data);
+// export const login = async (data) => {
+//     const res = await api.post("/auth/login", data);
 
-    if (res.data?.token) {
-        localStorage.setItem("accessToken", res.data.token);
-        localStorage.setItem("refreshToken", res.data.refreshToken);
-    }
+//     if (res.data?.token) {
+//         localStorage.setItem("accessToken", res.data.token);
+//         localStorage.setItem("refreshToken", res.data.refreshToken);
+//     }
+
+//     return res.data;
+// };
+
+export const login = async ({ email, password }) => {
+    const res = await api.post("/auth/login", { email, password });
+
+    // simpan kedua token
+    localStorage.setItem("accessToken", res.data.token);
+    localStorage.setItem("refreshToken", res.data.refreshToken);
 
     return res.data;
 };
@@ -36,17 +46,43 @@ export const resendResetPasswordOTP = async (data) => {
     return res.data
 }
 
-export const changePassword = async (data) => {
-    const res = await api.patch("/auth/change-password", data)
+export const resetPassword = async (data) => {
+    const res = await api.patch("/auth/reset-password", data)
     return res.data
 }
 
-export const logout = async (data) => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
+export const changePasswordOTP = async (data) => {
+    const res = await api.post("/auth/change-password/send-otp")
+    return res.data;
 }
 
-export const getProfile = async () => {
-    const res = await api.get("/auth/profile");
-    return res.data;
-};
+export const verifyChangePasswordOTP = async ({otp}) => {
+    const res = await api.post("/auth/change-password/verify-otp", {otp})
+    return res.data
+}
+
+export const changePassword = async ({current_password, new_password, confirm_new_password}) => {
+    const res = await api.post("/auth/change-password/confirm", {current_password,new_password, confirm_new_password})
+    return res.data
+}
+
+export const logout = async () => {
+    try {
+
+        // kirim request logout ke backend
+        await api.post("/auth/logout");
+
+    } catch (err) {
+
+        console.error("Logout error:", err);
+
+    } finally {
+
+        // tetap hapus token di browser
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+
+        // redirect login
+        window.location.href = "/login";
+    }
+}

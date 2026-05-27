@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { changePassword, resendResetPasswordOTP } from "../services/auth-service";
+import { resetPasswordOTP, resendResetPasswordOTP, resetPassword } from "../services/auth-service";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../components/shared/button/Button";
-import styles from "../components/shared/AuthForm.module.css"
+import styles from "../components/shared/Form.module.css"
 import backgroundImage from '../assets/images/background_image.png'
 
 function ResetPasswordPage () {
@@ -44,7 +44,7 @@ function ResetPasswordPage () {
 
         try {
             
-            const data = await changePassword({otp, email, password, confirmPassword})
+            const data = await resetPassword({otp, email, password, confirmPassword})
             alert("Password successfully changed");
 
             navigate("/login")
@@ -99,7 +99,7 @@ function ResetPasswordPage () {
                     <p className={styles.subtitle}>to complete this action please type the otp code and create your new password</p>
                     <form className={styles.form} onSubmit={handleChangePassword}>
                         <div className={styles.field}>
-                            <label className={styles.label}>Email</label>
+                            <label className={styles.label}>OTP</label>
                             <input 
                                 className={styles.input}
                                 type="text"
@@ -134,7 +134,7 @@ function ResetPasswordPage () {
                             </div>
                         </div>
                         <div className={styles.field}>
-                            <label className={styles.label}>Password</label>
+                            <label className={styles.label}>Confirm Password</label>
                             <div className={styles["input-wrapper"]}>
                                 <input
                                     className={styles.input}

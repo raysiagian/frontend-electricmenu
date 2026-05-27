@@ -30,11 +30,20 @@
 
 .ghost {
     background: transparent;
-    color: var(--color-gray-700);
+    color: var(--color-gray-600);
 }
 
 .ghost:hover {
     background-color: var(--color-gray-100);
+}
+
+.danger {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+.danger:hover {
+    background-color: var(--color-danger-dark);
 }
 
 /* Sizes */

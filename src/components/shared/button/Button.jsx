@@ -8,6 +8,7 @@ export const Button = ({
     full = false,
     onClick,
     type = 'button',
+    ...props
     }) => (
     <button
         type={type}

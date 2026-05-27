@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getUserShops, searchShopUser } from "../../services/shop-service";
 import tableStyles from "../shared/Table.module.css";
+import paginationStyle from "../shared/pagination/Pagination.module.css"
 
 function ShopListComponent({search}){
     const [shops, setShops] = useState([]);
@@ -109,19 +110,22 @@ function ShopListComponent({search}){
 
                 {/* Pagination */}
                 {pagination && pagination.totalPages > 1 && (
-                    <div style={{ marginTop: "10px" }}>
+                    <div className={paginationStyle.pagination}>
                         <button
+                            className={paginationStyle["page-btn"]}
                             onClick={() => setPage((p) => p - 1)}
                             disabled={page === 1 || loading}
                         >
                             Prev
                         </button>
 
-                        <span style={{ margin: "0 10px" }}>
+                        {/* <span style={{ margin: "0 10px" }}>
                             Page {page} of {pagination.totalPages}
-                        </span>
+                        </span> */}
+                        <span className={paginationStyle["page-info"]}>{page}</span>
 
                         <button
+                            className={paginationStyle["page-btn"]}
                             onClick={() => setPage((p) => p + 1)}
                             disabled={page >= pagination.totalPages || loading}
                         >

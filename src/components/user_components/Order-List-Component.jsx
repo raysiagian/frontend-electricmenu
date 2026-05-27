@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllOrderByShopID, updateOrderStatus } from "../../services/order-service";
 import tableStyles from "../shared/Table.module.css";
 import PopUpModal from "../shared/popup/Pop-Up-Modal";
+import paginationStyle from "../shared/pagination/Pagination.module.css"
 
 function OrderListComponent ({shop_id, status}) {
     const [orders, setOrders] = useState([])
@@ -63,57 +64,63 @@ function OrderListComponent ({shop_id, status}) {
             )}
 
             {!loading && orders.length > 0 && (
-                <table className={tableStyles.table}>
-                    <thead>
-                        <tr>
-                            {/* <th  className={tableStyles.th}>ID</th> */}
-                            <th  className={tableStyles.th}>Buyer</th>
-                            <th  className={tableStyles.th}>Total</th>
-                            <th  className={tableStyles.th}>Order Status</th>
-                            <th  className={tableStyles.th}>Order Date</th>
-                            <th  className={tableStyles.th}>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {orders.map((order) => (
-                            <tr key={order.id}>
-                                {/* <td className={tableStyles.td}>{order.id}</td> */}
-                                <td className={tableStyles.td}>{order.buyer_name}</td>
-                                <td className={tableStyles.td}>
-                                    Rp.{Number(order.grand_total).toLocaleString("id-ID")}
-                                </td>
-                                <td className={tableStyles.td}>{order.status}</td>
-                                <td className={tableStyles.td}>
-                                    {new Date(order.created_at).toLocaleDateString("id-ID")}
-                                </td>
-                                <td className={tableStyles.td}>
-                                    {/* <button onClick={() => alert(JSON.stringify(order.items, null, 2))}>
-                                        Lihat Item
-                                    </button> */}
-                                    <button onClick={() => setSelectedOrder(order)}>
-                                        See Detail
-                                    </button>
-                                </td>
+                <div className={tableStyles["table-wrapper"]}> 
+                    <table className={tableStyles.table}>
+                        <thead>
+                            <tr>
+                                {/* <th  className={tableStyles.th}>ID</th> */}
+                                <th  className={tableStyles.th}>Buyer</th>
+                                <th  className={tableStyles.th}>Total</th>
+                                <th  className={tableStyles.th}>Order Status</th>
+                                <th  className={tableStyles.th}>Order Date</th>
+                                <th  className={tableStyles.th}>Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {orders.map((order) => (
+                                <tr key={order.id}>
+                                    {/* <td className={tableStyles.td}>{order.id}</td> */}
+                                    <td className={tableStyles.td}>{order.buyer_name}</td>
+                                    <td className={tableStyles.td}>
+                                        Rp.{Number(order.grand_total).toLocaleString("id-ID")}
+                                    </td>
+                                    <td className={tableStyles.td}>{order.status}</td>
+                                    <td className={tableStyles.td}>
+                                        {new Date(order.created_at).toLocaleDateString("id-ID")}
+                                    </td>
+                                    <td className={tableStyles.td}>
+                                        {/* <button onClick={() => alert(JSON.stringify(order.items, null, 2))}>
+                                            Lihat Item
+                                        </button> */}
+                                        <button onClick={() => setSelectedOrder(order)}>
+                                            See Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
              {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
-                <div style={{ marginTop: "10px" }}>
+                <div className={paginationStyle.pagination}>
                     <button
+                    className={paginationStyle["page-btn"]}
                         onClick={() => setPage((p) => p - 1)}
                         disabled={page === 1 || loading}
                     >
                         Prev
                     </button>
 
-                    <span style={{ margin: "0 10px" }}>
+                    {/* <span style={{ margin: "0 10px" }}>
                         Page {page} of {pagination.totalPages}
-                    </span>
+                    </span> */}
 
+                    <span className={paginationStyle["page-info"]}>{page}</span>
+                    
                     <button
+                    className={paginationStyle["page-btn"]}
                         onClick={() => setPage((p) => p + 1)}
                         disabled={page >= pagination.totalPages || loading}
                     >

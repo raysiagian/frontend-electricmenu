@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // const BASE_URL = "http://localhost:3000/api"
-const BASE_URL = "https://backend-electricmenu.onrender.com/api"
+export const BASE_URL = process.env.BASE_URL
 
 const publicApi = axios.create({
     baseURL: BASE_URL,

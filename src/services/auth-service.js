@@ -37,12 +37,12 @@ export const resendOTP = async (data) => {
 }
 
 export const resetPasswordOTP = async (data) => {
-    const res = await api.post("auth/reset-password-otp", data)
+    const res = await api.post("/auth/reset-password-otp", data)
     return res.data;
 }
 
 export const resendResetPasswordOTP = async (data) => {
-    const res = await api.post("auth/resend-reset-password-otp", data)
+    const res = await api.post("/auth/resend-reset-password-otp", data)
     return res.data
 }
 
@@ -52,7 +52,7 @@ export const resetPassword = async (data) => {
 }
 
 export const changePasswordOTP = async (data) => {
-    const res = await api.post("/auth/change-password/send-otp")
+    const res = await api.post("/auth/change-password/send-otp", data)
     return res.data;
 }
 

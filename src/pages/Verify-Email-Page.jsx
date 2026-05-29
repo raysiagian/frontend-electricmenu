@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { verifyOTP, resendOTP } from "../services/auth-service";
+import formStyle from "../components/shared/Form.module.css"
+import { Button } from "../components/shared/button/Button";
 
 function VerifyEmail() {
     const location = useLocation();
@@ -83,40 +85,52 @@ function VerifyEmail() {
     };
 
     return (
-        <div>
-            <h2>Verify your email</h2>
+        <div className={formStyle.page}>
+            <div className={formStyle.card}>
+                <h2 className={formStyle.title}>Verify your email</h2>
+                <form className={formStyle.form} onSubmit={handleVerify}>
+                    <div className={formStyle.field}>
+                        <label className={formStyle.label}>Email</label>
+                        <input
+                            className={formStyle.input}
+                            type="email"
+                            placeholder="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    
+                    <div className={formStyle.field}>
+                        <label className={formStyle.label}>OTP Code</label>
+                        <input
+                            className={formStyle.input}
+                            type="text" 
+                            placeholder="OTP Code"
+                            value={otp}
+                            onChange={(e) => {
+                                // console.log("OTP INPUT:", e.target.value);
+                                setOtp(e.target.value);
+                            }} 
+                        />
+                    </div>
+                    {error && <p className={formStyle["error-text"]}>{error}</p>}
+                    <div className={formStyle.actions}>
+                        <Button variant="primary" type="submit" disabled={loading}>
+                            {loading ? "Verifying..." : "Verify"}
+                        </Button>
+                        {/* <button type="submit" disabled={loading}>
+                            {loading ? "Verifying..." : "Verify"}
+                        </button> */}
+                        {/* <button onClick={handleResend}>
+                            Resend OTP
+                        </button> */}
+                        <Button variant="outline" onClick={handleResend}>
+                            Resend OTP
+                        </Button>
+                    </div>
 
-            <form onSubmit={handleVerify}>
-                <div>
-                    <input
-                        type="email"
-                        placeholder="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                
-                <div>
-                    <input 
-                        type="text" 
-                        placeholder="Otp Code"
-                        value={otp}
-                        onChange={(e) => {
-                            // console.log("OTP INPUT:", e.target.value);
-                            setOtp(e.target.value);
-                        }} 
-                    />
-                </div>
-
-                <button type="submit" disabled={loading}>
-                    {loading ? "Verifying..." : "Verify"}
-                </button>
-
-            </form>
-
-            <button onClick={handleResend}>
-                Resend OTP
-            </button>
+                </form>
+            </div>
         </div>
     );
 }

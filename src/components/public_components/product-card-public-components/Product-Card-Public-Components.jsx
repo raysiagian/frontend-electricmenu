@@ -6,7 +6,7 @@ function ProductCardPublicComponent({product, cartItem, onAdd, onIncrease, onDec
         <div className={styles.card}>
             
             {product?.product_image_url ? (
-                <img className={styles.image} src={product?.product_image_url} alt="Product Image" />
+                <img className={styles.image} src={product?.product_image_url} alt={product.product_name} />
             ) : (
                 <div className={styles["image-placeholder"]}>
                     No Image

@@ -42,7 +42,7 @@ function RegisterUser() {
     try {
         const data = await registerUser({ name, email, password });
 
-        console.log("RESPONSE:", data);
+        // console.log("RESPONSE:", data);
 
         navigate("/verify-email", {
                 state: {
@@ -82,7 +82,7 @@ function RegisterUser() {
                             placeholder="name"
                             value={name}
                             onChange={(e) => {
-                                console.log("Name INPUT:", e.target.value);
+                                // console.log("Name INPUT:", e.target.value);
                                 setName(e.target.value);
                             }} 
                         />

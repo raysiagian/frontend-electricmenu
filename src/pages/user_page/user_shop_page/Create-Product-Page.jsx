@@ -118,7 +118,6 @@ function CreateProductPage() {
         <div className={formStyle.card}>
             <h2 className={formStyle.title}>Create New Product</h2>
 
-            {error && <p className={formStyle["error-text"]}>{error}</p>}
 
             <form className={formStyle.form} onSubmit={handleSubmit}>
 
@@ -231,7 +230,7 @@ function CreateProductPage() {
                         />
                     )}
                 </div>
-
+                {error && <p className={formStyle["error-text"]}>{error}</p>}
                 <div className={formStyle.actions}>
                     <Button variant="primary" type="submit" disabled={loading} full>
                         {loading ? "Loading..." : "Create Product"}

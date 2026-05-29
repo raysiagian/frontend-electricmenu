@@ -59,13 +59,16 @@ api.interceptors.response.use(
 
         console.log("ERROR STATUS:", error.response?.status);
 
+        const isEmailNotVerified =
+    error.response?.data?.emailVerified === false;
+
         if (
-            // (error.response?.status === 401 || error.response?.status === 403) &&
-            // !originalRequest._retry
             (error.response?.status === 401 ||
             error.response?.status === 403) &&
             !originalRequest._retry &&
-            !originalRequest?.url?.includes("/auth/refresh-token")
+            !originalRequest?.url?.includes("/auth/refresh-token") &&
+            !originalRequest?.url?.includes("/auth/login") &&
+            !isEmailNotVerified
         ) {
             originalRequest._retry = true;
 
